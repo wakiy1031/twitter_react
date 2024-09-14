@@ -8,8 +8,10 @@ export const signUp = async (userData) => {
     });
     return response.data;
   } catch (error) {
-    throw error.response
-      ? error.response.data
-      : new Error("登録時にエラーが発生しました");
+    if (error.response && error.response.data && error.response.data.errors) {
+      throw { errors: error.response.data.errors };
+    } else {
+      throw new Error("登録時にエラーが発生しました");
+    }
   }
 };

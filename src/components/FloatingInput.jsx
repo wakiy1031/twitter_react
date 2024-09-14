@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Input } from "@yamada-ui/react";
+import { Input, Text } from "@yamada-ui/react";
 
 export const FloatingInput = ({
   id,
@@ -9,6 +9,7 @@ export const FloatingInput = ({
   onChange,
   placeholder,
   required,
+  error,
 }) => {
   const [isActive, setIsActive] = useState(false);
   const [isFloating, setIsFloating] = useState(false);
@@ -26,6 +27,9 @@ export const FloatingInput = ({
     setIsActive(false);
   };
 
+  const formattedError =
+    type === "password" ? `${name} ${error}` : `${value} ${error}`;
+
   return (
     <div className="relative">
       <Input
@@ -41,7 +45,7 @@ export const FloatingInput = ({
         autoComplete="off"
         className={`pt-6 pb-2 w-full transition-all duration-300 ease-out hover:border-blue-500 ${
           isActive ? "border-blue-500" : ""
-        }`}
+        } ${error ? "border-red-500" : ""}`}
       />
       <label
         htmlFor={id}
@@ -53,6 +57,11 @@ export const FloatingInput = ({
       >
         {placeholder}
       </label>
+      {error && (
+        <Text color="red.500" fontSize="sm" className="mt-1">
+          {formattedError}
+        </Text>
+      )}
     </div>
   );
 };

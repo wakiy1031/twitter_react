@@ -15,6 +15,7 @@ export const SignUpForm = ({ onSuccess }) => {
   });
 
   const [isFormValid, setIsFormValid] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const notice = useNotice();
 
@@ -29,15 +30,12 @@ export const SignUpForm = ({ onSuccess }) => {
       password !== "" &&
       password_confirmation !== "" &&
       password === password_confirmation;
-
-    console.log("フォームデータ:", formData);
-    console.log("フォーム有効性:", newIsFormValid);
-
     setIsFormValid(newIsFormValid);
   }, [formData]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const handleBirthdateChange = (value) => {
@@ -56,20 +54,27 @@ export const SignUpForm = ({ onSuccess }) => {
       });
       onSuccess();
     } catch (error) {
-      console.error("サインアップエラー:", error);
-      console.error("登録に失敗しました。", error);
-      notice({
-        title: "登録に失敗しました。",
-        description: error.message,
-        status: "error",
-      });
+      if (error.errors) {
+        setErrors(error.errors);
+        notice({
+          title: "登録に失敗しました",
+          description: "入力内容を確認してください。",
+          status: "error",
+        });
+      } else {
+        notice({
+          title: "登録に失敗しました",
+          description: error.message || "予期せぬエラーが発生しました。",
+          status: "error",
+        });
+      }
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full pt-1">
       <VStack spacing={4} align="stretch">
-        <FormControl>
+        <FormControl isInvalid={!!errors.name}>
           <FloatingInput
             id="name"
             name="name"
@@ -77,9 +82,11 @@ export const SignUpForm = ({ onSuccess }) => {
             onChange={handleChange}
             placeholder="名前"
             required
+            error={errors.name}
           />
         </FormControl>
-        <FormControl>
+
+        <FormControl isInvalid={!!errors.email}>
           <FloatingInput
             id="email"
             name="email"
@@ -88,9 +95,11 @@ export const SignUpForm = ({ onSuccess }) => {
             onChange={handleChange}
             placeholder="メールアドレス"
             required
+            error={errors.email}
           />
         </FormControl>
-        <FormControl>
+
+        <FormControl isInvalid={!!errors.phone}>
           <FloatingInput
             id="phone"
             name="phone"
@@ -99,10 +108,13 @@ export const SignUpForm = ({ onSuccess }) => {
             onChange={handleChange}
             placeholder="電話番号"
             required
+            error={errors.phone}
           />
         </FormControl>
+
         <BirthdateSelect onChange={handleBirthdateChange} />
-        <FormControl>
+
+        <FormControl isInvalid={!!errors.password}>
           <FloatingInput
             id="password"
             name="password"
@@ -111,9 +123,11 @@ export const SignUpForm = ({ onSuccess }) => {
             onChange={handleChange}
             placeholder="パスワード"
             required
+            error={errors.password}
           />
         </FormControl>
-        <FormControl>
+
+        <FormControl isInvalid={!!errors.password_confirmation}>
           <FloatingInput
             id="password_confirmation"
             name="password_confirmation"
@@ -122,8 +136,10 @@ export const SignUpForm = ({ onSuccess }) => {
             onChange={handleChange}
             placeholder="パスワード確認"
             required
+            error={errors.password_confirmation}
           />
         </FormControl>
+
         <Button type="submit" colorScheme="blue" isDisabled={!isFormValid}>
           アカウントを作成
         </Button>
