@@ -1,9 +1,8 @@
-import axios from "axios";
-import { users } from "../urls";
+import { api } from "../../utils/api";
 
 export const signUp = async (userData) => {
   try {
-    const response = await axios.post(`${users}`, {
+    const response = await api.post("/users", {
       ...userData,
       confirm_success_url: "http://localhost:3000/letter_opener",
     });

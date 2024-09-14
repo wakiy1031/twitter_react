@@ -1,13 +1,17 @@
-import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { SignUpPage } from "./pages/SignUpPage";
 import { UIProvider } from "@yamada-ui/react";
-import SignUp from "./components/SignUp";
+import { HomePage } from "./pages/HomePage";
 
-function App() {
+export const App = () => {
   return (
     <UIProvider>
-      <SignUp />
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+        </Routes>
+      </Router>
     </UIProvider>
   );
-}
-
-export default App;
+};
