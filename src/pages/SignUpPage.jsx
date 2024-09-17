@@ -10,9 +10,15 @@ import {
 import { FaApple, FaXTwitter } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { SignUpModal } from "../features/auth/components/SignUpModal";
+import { LoginModal } from "../features/auth/components/LoginModal";
 
 export const SignUpPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isLoginOpen,
+    onOpen: onLoginOpen,
+    onClose: onLoginClose,
+  } = useDisclosure();
 
   return (
     <Box minH="100vh" bg="white">
@@ -82,11 +88,7 @@ export const SignUpPage = () => {
               <Text fontWeight="bold" mb={2}>
                 すでにアカウントをお持ちですか？
               </Text>
-              <Button
-                variant="outline"
-                w="full"
-                onClick={() => console.log("Login clicked")}
-              >
+              <Button variant="outline" w="full" onClick={onLoginOpen}>
                 ログイン
               </Button>
             </Box>
@@ -95,6 +97,7 @@ export const SignUpPage = () => {
       </Flex>
 
       <SignUpModal isOpen={isOpen} onClose={onClose} />
+      <LoginModal isOpen={isLoginOpen} onClose={onLoginClose} />
     </Box>
   );
 };
