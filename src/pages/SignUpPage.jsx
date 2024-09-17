@@ -11,14 +11,53 @@ import { FaApple, FaXTwitter } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { SignUpModal } from "../features/auth/components/SignUpModal";
 import { LoginModal } from "../features/auth/components/LoginModal";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const SignUpPage = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const {
+    isOpen: isSignUpOpen,
+    onOpen: onSignUpOpen,
+    onClose: onSignUpClose,
+  } = useDisclosure();
   const {
     isOpen: isLoginOpen,
     onOpen: onLoginOpen,
     onClose: onLoginClose,
   } = useDisclosure();
+
+  useEffect(() => {
+    if (location.pathname === "/signup") {
+      onSignUpOpen();
+    } else {
+      onSignUpClose();
+    }
+
+    if (location.pathname === "/login") {
+      onLoginOpen();
+    } else {
+      onLoginClose();
+    }
+  }, [
+    location.pathname,
+    onSignUpOpen,
+    onSignUpClose,
+    onLoginOpen,
+    onLoginClose,
+  ]);
+
+  const handleCloseSignUp = () => {
+    onSignUpClose();
+    navigate("/", { replace: true });
+  };
+
+  const handleCloseLogin = () => {
+    onLoginClose();
+    navigate("/", { replace: true });
+  };
 
   return (
     <Box minH="100vh" bg="white">
@@ -75,7 +114,7 @@ export const SignUpPage = () => {
               bg="blue.500"
               color="white"
               _hover={{ bg: "blue.600" }}
-              onClick={onOpen}
+              onClick={() => navigate("/signup")}
             >
               アカウントを作成
             </Button>
@@ -88,7 +127,11 @@ export const SignUpPage = () => {
               <Text fontWeight="bold" mb={2}>
                 すでにアカウントをお持ちですか？
               </Text>
-              <Button variant="outline" w="full" onClick={onLoginOpen}>
+              <Button
+                variant="outline"
+                w="full"
+                onClick={() => navigate("/login")}
+              >
                 ログイン
               </Button>
             </Box>
@@ -96,8 +139,8 @@ export const SignUpPage = () => {
         </Box>
       </Flex>
 
-      <SignUpModal isOpen={isOpen} onClose={onClose} />
-      <LoginModal isOpen={isLoginOpen} onClose={onLoginClose} />
+      <SignUpModal isOpen={isSignUpOpen} onClose={handleCloseSignUp} />
+      <LoginModal isOpen={isLoginOpen} onClose={handleCloseLogin} />
     </Box>
   );
 };
