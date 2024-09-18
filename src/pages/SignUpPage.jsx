@@ -63,7 +63,7 @@ export const SignUpPage = () => {
     <Box minH="100vh" bg="white">
       <Flex
         h="100vh"
-        className="lg:items-center lg:justify-center py-16 px-4 lg:p-0"
+        className="lg:items-center lg:justify-center lg:py-16 py-4 px-4 lg:p-0"
         direction={{ base: "row", lg: "column" }}
       >
         <Box w={{ base: "50%", lg: "100%" }}>
@@ -75,20 +75,28 @@ export const SignUpPage = () => {
           w={{ base: "50%", lg: "100%" }}
           spacing={6}
           align="stretch"
-          className="lg:p-8 p-0 lg:mt-0 mt-10"
+          className="lg:p-8 p-0 lg:mt-0 mt-6"
         >
+          <Text
+            fontSize={{ base: "6xl", lg: "5xl" }}
+            fontWeight="bold"
+            lineHeight="1.2"
+            mb={6}
+          >
+            すべての話題が、
+            <br className="lg:hidden" />
+            ここに。
+          </Text>
+          <Text fontSize="2xl" fontWeight="bold" mb={4}>
+            今すぐ参加しましょう。
+          </Text>
           <VStack
             spacing={6}
             align="stretch"
             w={{ base: "75%", lg: "100%" }}
-            pb={1}
+            py={1}
+            maxW={{ base: "300px", lg: "100%" }}
           >
-            <Text fontSize="5xl" fontWeight="bold" lineHeight="1.2">
-              すべての話題が、ここに。
-            </Text>
-            <Text fontSize="2xl" fontWeight="bold">
-              今すぐ参加しましょう。
-            </Text>
             <Button
               leftIcon={<FcGoogle />}
               variant="outline"
@@ -125,7 +133,7 @@ export const SignUpPage = () => {
 
             <Box mt={8}>
               <Text fontWeight="bold" mb={2}>
-                すでにアカウントをお持ちですか？
+                アカウントをお持ちの場合
               </Text>
               <Button
                 variant="outline"
