@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, FormControl, VStack, useNotice } from "@yamada-ui/react";
-import axios from "axios";
+import Cookies from "js-cookie";
 import { FloatingInput } from "../../../components/FloatingInput";
+import { api } from "../../../utils/api";
 
 export const LoginForm = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -29,28 +30,36 @@ export const LoginForm = ({ onSuccess }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/v1/users/sign_in",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await api.post("/users/sign_in", {
+        email,
+        password,
+      });
 
       const { "access-token": accessToken, client, uid } = response.headers;
 
-      localStorage.setItem("access-token", accessToken);
-      localStorage.setItem("client", client);
-      localStorage.setItem("uid", uid);
+      if (accessToken && client && uid) {
+        Cookies.set("_access_token", accessToken, {
+          path: "/",
+          sameSite: "Lax",
+        });
+        Cookies.set("_client", client, { path: "/", sameSite: "Lax" });
+        Cookies.set("_uid", uid, { path: "/", sameSite: "Lax" });
 
-      notice({
-        title: "ログイン成功",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+        notice({
+          title: "ログイン成功",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
 
-      onSuccess();
+        onSuccess();
+      } else {
+        console.error("必要なヘッダー情報が不足しています:", {
+          accessToken,
+          client,
+          uid,
+        });
+      }
     } catch (error) {
       if (error.response?.data?.errors) {
         setErrors(error.response.data.errors);
