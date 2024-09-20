@@ -12,42 +12,13 @@ import { FcGoogle } from "react-icons/fc";
 import { SignUpModal } from "../features/auth/components/SignUpModal";
 import { LoginModal } from "../features/auth/components/LoginModal";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 export const SignUpPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const {
-    isOpen: isSignUpOpen,
-    onOpen: onSignUpOpen,
-    onClose: onSignUpClose,
-  } = useDisclosure();
-  const {
-    isOpen: isLoginOpen,
-    onOpen: onLoginOpen,
-    onClose: onLoginClose,
-  } = useDisclosure();
-
-  useEffect(() => {
-    if (location.pathname === "/signup") {
-      onSignUpOpen();
-    } else {
-      onSignUpClose();
-    }
-
-    if (location.pathname === "/login") {
-      onLoginOpen();
-    } else {
-      onLoginClose();
-    }
-  }, [
-    location.pathname,
-    onSignUpOpen,
-    onSignUpClose,
-    onLoginOpen,
-    onLoginClose,
-  ]);
+  const { onClose: onSignUpClose } = useDisclosure();
+  const { onClose: onLoginClose } = useDisclosure();
 
   const handleCloseSignUp = () => {
     onSignUpClose();
@@ -58,6 +29,9 @@ export const SignUpPage = () => {
     onLoginClose();
     navigate("/", { replace: true });
   };
+
+  const showSignUpModal = location.pathname === "/signup";
+  const showLoginModal = location.pathname === "/login";
 
   return (
     <Box minH="100vh" bg="white">
@@ -147,8 +121,12 @@ export const SignUpPage = () => {
         </Box>
       </Flex>
 
-      <SignUpModal isOpen={isSignUpOpen} onClose={handleCloseSignUp} />
-      <LoginModal isOpen={isLoginOpen} onClose={handleCloseLogin} />
+      {showSignUpModal && (
+        <SignUpModal isOpen={true} onClose={handleCloseSignUp} />
+      )}
+      {showLoginModal && (
+        <LoginModal isOpen={true} onClose={handleCloseLogin} />
+      )}
     </Box>
   );
 };
