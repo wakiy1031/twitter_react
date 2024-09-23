@@ -5,13 +5,35 @@ import {
   ModalBody,
   ModalCloseButton,
   Text,
+  useNotice,
 } from "@yamada-ui/react";
 import { LoginForm } from "./LoginForm";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaXTwitter } from "react-icons/fa6";
+import { useEffect } from "react";
 
 export const LoginModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const notice = useNotice();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const accountConfirmationSuccess = searchParams.get(
+      "account_confirmation_success"
+    );
+
+    if (accountConfirmationSuccess === "true") {
+      notice({
+        title: "アカウント認証完了",
+        description: "アカウントが正常に認証されました。",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, notice, navigate]);
 
   const handleSuccess = () => {
     onClose();
