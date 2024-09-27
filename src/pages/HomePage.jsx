@@ -1,6 +1,7 @@
 import { Box, Text } from "@yamada-ui/react";
 import { useRecoilValue } from "recoil";
 import { currentUserState } from "../globalStates/atoms";
+import { PostForm } from "../features/post/components/postForm";
 
 export const HomePage = () => {
   const currentUser = useRecoilValue(currentUserState);
@@ -10,6 +11,7 @@ export const HomePage = () => {
       <Text fontSize="4xl" fontWeight="bold" mb={4}>
         ツイート一覧画面
       </Text>
+      <PostForm />
       {currentUser ? (
         <Text fontSize="xl" mb={4}>
           ログインユーザー: {currentUser.name}

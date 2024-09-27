@@ -2,7 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const DEFAULT_API_LOCALHOST = "http://localhost:3000/api/v1";
-export const SESSIONS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/auth/sessions`; // 正しいエンドポイントに変更
+export const SESSIONS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/auth/sessions`;
+export const IMAGES_ENDPOINT = `${DEFAULT_API_LOCALHOST}/images`;
+export const POSTS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/tweets`;
 
 export const api = axios.create({
   baseURL: DEFAULT_API_LOCALHOST,
