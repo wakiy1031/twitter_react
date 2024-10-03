@@ -10,7 +10,7 @@ import {
   useNotice,
 } from "@yamada-ui/react";
 import { uploadImage } from "../../../features/api/postApi";
-import { PiImageSquare } from "react-icons/pi";
+import { PiImageSquare, PiX } from "react-icons/pi";
 import { Carousel, CarouselSlide } from "@yamada-ui/carousel";
 
 export const PostForm = () => {
@@ -22,9 +22,16 @@ export const PostForm = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImages((prevImages) => [...prevImages, ...files]);
-    const newPreviews = files.map((file) => URL.createObjectURL(file));
+    const newFiles = files.slice(0, 4 - images.length);
+
+    setImages((prevImages) => [...prevImages, ...newFiles]);
+    const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
     setPreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
+  };
+
+  const handleRemoveImage = (index) => {
+    setPreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   const onSubmit = async (e) => {
@@ -72,7 +79,7 @@ export const PostForm = () => {
     <form onSubmit={onSubmit}>
       <Flex width="full">
         <Box>
-          <Avatar src="https://not-found.com" size="sm" />
+          <Avatar size="sm" />
         </Box>
         <Box width="full" ml={4}>
           <Textarea
@@ -99,12 +106,31 @@ export const PostForm = () => {
               }}
             >
               {previews.map((preview, index) => (
-                <CarouselSlide key={index}>
-                  <Image
-                    src={preview}
-                    className="w-full h-full object-cover"
-                    borderRadius="12"
-                  />
+                <CarouselSlide key={index} className="relative">
+                  <Box position="relative" w="full" h="full">
+                    <Image
+                      src={preview}
+                      borderRadius="12"
+                      objectFit="cover"
+                      objectPosition="center"
+                      w="full"
+                      h="full"
+                    />
+                    <Button
+                      position="absolute"
+                      top="1"
+                      right="1"
+                      bg="gray.800"
+                      borderRadius="full"
+                      color="white"
+                      p={0}
+                      size="sm"
+                      _hover={{ bg: "gray.900" }}
+                      onClick={() => handleRemoveImage(index)}
+                    >
+                      <PiX size="16" />
+                    </Button>
+                  </Box>
                 </CarouselSlide>
               ))}
             </Carousel>
@@ -140,6 +166,7 @@ export const PostForm = () => {
         ref={fileInputRef}
         style={{ display: "none" }}
         multiple
+        disabled={images.length >= 4}
       />
     </form>
   );
