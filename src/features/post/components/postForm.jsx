@@ -5,23 +5,26 @@ import {
   Box,
   Button,
   Flex,
+  Image,
   Textarea,
   useNotice,
 } from "@yamada-ui/react";
 import { uploadImage } from "../../../features/api/postApi";
 import { PiImageSquare } from "react-icons/pi";
+import { Carousel, CarouselSlide } from "@yamada-ui/carousel";
 
 export const PostForm = () => {
   const [content, setContent] = useState("");
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState("");
+  const [images, setImages] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const { handleSubmit } = usePost();
   const notice = useNotice();
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setPreview(URL.createObjectURL(file));
+    const files = Array.from(e.target.files);
+    setImages((prevImages) => [...prevImages, ...files]);
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+    setPreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
   };
 
   const onSubmit = async (e) => {
@@ -29,16 +32,16 @@ export const PostForm = () => {
     try {
       const postResponse = await handleSubmit({ content });
 
-      if (image) {
+      if (images.length > 0) {
         const formData = new FormData();
-        formData.append("images[]", image);
+        images.forEach((image) => formData.append("images[]", image));
         formData.append("post_id", postResponse.data.id);
         await uploadImage(formData);
       }
 
       setContent("");
-      setImage(null);
-      setPreview("");
+      setImages([]);
+      setPreviews([]);
       notice({
         title: "投稿が作成されました",
         status: "success",
@@ -82,18 +85,31 @@ export const PostForm = () => {
             mb={4}
             autosize
           />
-          {preview && (
-            <img
-              src={preview}
-              alt="プレビュー"
-              style={{
-                maxWidth: "100%",
-                borderRadius: "16px",
-                marginBottom: "16px",
+          {previews.length > 0 && (
+            <Carousel
+              slideSize={previews.length === 1 ? "100%" : "50%"}
+              align="start"
+              withIndicators={false}
+              loop={false}
+              draggable={false}
+              controlProps={{
+                bg: "gray.800",
+                color: "white",
+                _hover: { bg: "gray.900" },
               }}
-            />
+            >
+              {previews.map((preview, index) => (
+                <CarouselSlide key={index}>
+                  <Image
+                    src={preview}
+                    className="w-full h-full object-cover"
+                    borderRadius="12"
+                  />
+                </CarouselSlide>
+              ))}
+            </Carousel>
           )}
-          <Flex justifyContent="space-between" alignItems="center">
+          <Flex justifyContent="space-between" alignItems="center" pt={2}>
             <Flex>
               <Box mr={2}>
                 <PiImageSquare
@@ -123,6 +139,7 @@ export const PostForm = () => {
         onChange={handleImageChange}
         ref={fileInputRef}
         style={{ display: "none" }}
+        multiple
       />
     </form>
   );
