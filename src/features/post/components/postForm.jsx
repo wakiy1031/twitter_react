@@ -15,23 +15,25 @@ import { Carousel, CarouselSlide } from "@yamada-ui/carousel";
 
 export const PostForm = () => {
   const [content, setContent] = useState("");
-  const [images, setImages] = useState([]);
-  const [previews, setPreviews] = useState([]);
+  const [imageData, setImageData] = useState([]);
   const { handleSubmit } = usePost();
   const notice = useNotice();
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const newFiles = files.slice(0, 4 - images.length);
+    const newFiles = files.slice(0, 4 - imageData.length);
 
-    setImages((prevImages) => [...prevImages, ...newFiles]);
-    const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
-    setPreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
+    setImageData((prevData) => [
+      ...prevData,
+      ...newFiles.map((file) => ({
+        file,
+        previewUrl: URL.createObjectURL(file),
+      })),
+    ]);
   };
 
   const handleRemoveImage = (index) => {
-    setPreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    setImageData((prevData) => prevData.filter((_, i) => i !== index));
   };
 
   const onSubmit = async (e) => {
@@ -39,16 +41,15 @@ export const PostForm = () => {
     try {
       const postResponse = await handleSubmit({ content });
 
-      if (images.length > 0) {
+      if (imageData.length > 0) {
         const formData = new FormData();
-        images.forEach((image) => formData.append("images[]", image));
+        imageData.forEach(({ file }) => formData.append("images[]", file));
         formData.append("post_id", postResponse.data.id);
         await uploadImage(formData);
       }
 
       setContent("");
-      setImages([]);
-      setPreviews([]);
+      setImageData([]);
       notice({
         title: "投稿が作成されました",
         status: "success",
@@ -92,9 +93,9 @@ export const PostForm = () => {
             mb={4}
             autosize
           />
-          {previews.length > 0 && (
+          {imageData.length > 0 && (
             <Carousel
-              slideSize={previews.length === 1 ? "100%" : "50%"}
+              slideSize={imageData.length === 1 ? "100%" : "50%"}
               align="start"
               withIndicators={false}
               loop={false}
@@ -105,11 +106,11 @@ export const PostForm = () => {
                 _hover: { bg: "gray.900" },
               }}
             >
-              {previews.map((preview, index) => (
+              {imageData.map(({ previewUrl }, index) => (
                 <CarouselSlide key={index} className="relative">
                   <Box position="relative" w="full" h="full">
                     <Image
-                      src={preview}
+                      src={previewUrl}
                       borderRadius="12"
                       objectFit="cover"
                       objectPosition="center"
@@ -166,7 +167,7 @@ export const PostForm = () => {
         ref={fileInputRef}
         style={{ display: "none" }}
         multiple
-        disabled={images.length >= 4}
+        disabled={imageData.length >= 4}
       />
     </form>
   );
