@@ -3,8 +3,15 @@ import { SignUpPage } from "./pages/SignUpPage";
 import { UIProvider } from "@yamada-ui/react";
 import { HomePage } from "./pages/HomePage";
 import { RecoilRoot } from "recoil";
+import { useEffect } from "react";
 
 export const App = () => {
+  useEffect(() => {
+    const element = document.querySelector("html");
+    element.style.overflowY = "scroll";
+    element.style.overscrollBehaviorY = "none";
+  }, []);
+
   return (
     <RecoilRoot>
       <UIProvider>
