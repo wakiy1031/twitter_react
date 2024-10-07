@@ -1,5 +1,10 @@
 import { api, POSTS_ENDPOINT, IMAGES_ENDPOINT } from "../../utils/api";
 
+export const getPosts = async (data) => {
+  const response = await api.get(POSTS_ENDPOINT, data);
+  return response.data;
+};
+
 export const createPost = async (data) => {
   const response = await api.post(POSTS_ENDPOINT, data);
   return response.data;

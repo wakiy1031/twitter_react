@@ -1,5 +1,6 @@
 import { Flex, VStack } from "@yamada-ui/react";
 import { PostForm } from "../features/post/components/postForm";
+import { PostList } from "../features/post/components/postList";
 
 export const HomePage = () => {
   return (
@@ -17,6 +18,7 @@ export const HomePage = () => {
       ></VStack>
       <VStack width={{ base: "600px", lg: "100%" }} p={4}>
         <PostForm />
+        <PostList />
       </VStack>
       <VStack
         width={{ base: "350px", lg: "100%" }}
