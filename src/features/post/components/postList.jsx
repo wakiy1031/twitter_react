@@ -1,21 +1,19 @@
-import { useState, useEffect } from "react";
 import { getPosts } from "../../api/postApi";
 import { PostItem } from "./postItem";
+import { POSTS_ENDPOINT } from "../../../utils/api";
+import useSWR from "swr";
 
 export const PostList = () => {
-  const [posts, setPosts] = useState([]);
+  const { data: posts, error, isLoading } = useSWR(POSTS_ENDPOINT, getPosts);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const posts = await getPosts();
-        setPosts(posts);
-      } catch (error) {
-        console.error("投稿一覧取得エラー:", error);
-      }
-    };
-    fetchPosts();
-  }, []);
+  if (error) {
+    return <div>投稿一覧の取得中にエラーが発生しました。</div>;
+  }
+
+  if (isLoading) {
+    return <div>読み込み中...</div>;
+  }
+
   return (
     <>
       {posts.map((post) => (
