@@ -9,7 +9,6 @@ import {
   Textarea,
   useNotice,
 } from "@yamada-ui/react";
-import { uploadImage } from "../../../features/api/postApi";
 import { PiImageSquare, PiX } from "react-icons/pi";
 import { Carousel, CarouselSlide } from "@yamada-ui/carousel";
 
@@ -39,14 +38,7 @@ export const PostForm = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const postResponse = await handleSubmit({ content });
-
-      if (imageData.length > 0) {
-        const formData = new FormData();
-        imageData.forEach(({ file }) => formData.append("images[]", file));
-        formData.append("post_id", postResponse.data.id);
-        await uploadImage(formData);
-      }
+      await handleSubmit({ content }, imageData);
 
       setContent("");
       setImageData([]);

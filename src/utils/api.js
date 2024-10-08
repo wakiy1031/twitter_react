@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
+export const BASE_URL = "http://localhost:3000";
 const DEFAULT_API_LOCALHOST = "http://localhost:3000/api/v1";
 export const SESSIONS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/auth/sessions`;
 export const IMAGES_ENDPOINT = `${DEFAULT_API_LOCALHOST}/images`;
