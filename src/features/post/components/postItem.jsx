@@ -1,14 +1,23 @@
-import { BASE_URL } from "../../../utils/api";
-import { Text, Image } from "@yamada-ui/react";
+import { Box, Text, Flex, Avatar } from "@yamada-ui/react";
+import { PostImages } from "./postImages";
 
 export const PostItem = ({ post }) => {
   return (
-    <>
-      <Text>{post.content}</Text>
-      {post.images.length > 0 &&
-        post.images.map((image) => (
-          <Image key={image.id} src={`${BASE_URL}${image.url}`} />
-        ))}
-    </>
+    <Box borderBottom="1px solid #dcdcde" py={2} px={3}>
+      <Flex alignItems="start">
+        <Avatar size="sm" mr={2} />
+        <Box>
+          <Text>
+            <span className="font-bold">{post.user.name}</span>
+            <span className="text-gray-500 ml-1 text-sm">
+              @{post.user.username ? post.user.username : post.user.name}
+            </span>
+            <span className="text-gray-500 text-sm">・{post.created_at}</span>
+          </Text>
+          <Text mb={2}>{post.content}</Text>
+          <PostImages post={post} />
+        </Box>
+      </Flex>
+    </Box>
   );
 };

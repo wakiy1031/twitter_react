@@ -1,7 +1,8 @@
-import { getPosts } from "../../api/postApi";
-import { PostItem } from "./postItem";
-import { POSTS_ENDPOINT } from "../../../utils/api";
+import { getPosts } from "../api/postApi";
+import { PostItem } from "./components/postItem";
+import { POSTS_ENDPOINT } from "../../utils/api";
 import useSWR from "swr";
+import { Loading } from "@yamada-ui/react";
 
 export const PostList = () => {
   const { data: posts, error, isLoading } = useSWR(POSTS_ENDPOINT, getPosts);
@@ -11,7 +12,16 @@ export const PostList = () => {
   }
 
   if (isLoading) {
-    return <div>読み込み中...</div>;
+    return (
+      <Loading
+        variant="oval"
+        fontSize="3xl"
+        color="blue.500"
+        mx={"auto"}
+        w="full"
+        mt={6}
+      />
+    );
   }
 
   return (
