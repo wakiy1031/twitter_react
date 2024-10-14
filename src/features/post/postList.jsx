@@ -1,21 +1,21 @@
-import { getPosts } from "../api/postApi";
 import { PostItem } from "./components/postItem";
-import { POSTS_ENDPOINT } from "../../utils/api";
-import useSWR from "swr";
-import { Loading } from "@yamada-ui/react";
+import { Box, Loading } from "@yamada-ui/react";
+import { usePostListSWRInfinite } from "./customHooks/usePostListSWRInfinite";
+import { PostLoading } from "./components/PostLoding";
 
 export const PostList = () => {
-  const { data: posts, error, isLoading } = useSWR(POSTS_ENDPOINT, getPosts);
+  const { postsDataArr, error, isLoading, isReachingEnd } =
+    usePostListSWRInfinite();
 
   if (error) {
     return <div>投稿一覧の取得中にエラーが発生しました。</div>;
   }
 
-  if (isLoading) {
+  if (isLoading && postsDataArr.length === 0) {
     return (
       <Loading
         variant="oval"
-        fontSize="3xl"
+        fontSize="2xl"
         color="blue.500"
         mx={"auto"}
         w="full"
@@ -26,9 +26,14 @@ export const PostList = () => {
 
   return (
     <>
-      {posts.map((post) => (
-        <PostItem key={post.id} post={post} />
+      {postsDataArr.map((posts, index) => (
+        <Box key={index}>
+          {posts.map((post) => (
+            <PostItem key={post.id} post={post} />
+          ))}
+        </Box>
       ))}
+      {!isReachingEnd && <PostLoading />}
     </>
   );
 };
