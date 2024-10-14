@@ -14,7 +14,9 @@ export const usePost = () => {
         await uploadImage(formData);
       }
 
-      mutate(POSTS_ENDPOINT);
+      mutate(
+        (key) => typeof key === "string" && key.startsWith(POSTS_ENDPOINT)
+      );
 
       return response;
     } catch (error) {

@@ -18,7 +18,7 @@ const fetcher = async (url) => {
 };
 
 export const usePostListSWRInfinite = () => {
-  const { data, error, isLoading, size, setSize } = useSWRInfinite(
+  const { data, error, isLoading, size, setSize, mutate } = useSWRInfinite(
     getKey,
     fetcher
   );
@@ -35,6 +35,15 @@ export const usePostListSWRInfinite = () => {
     }
   }, [isReachingEnd, setSize]);
 
+  const refreshPosts = useCallback(async () => {
+    const newData = await fetcher(getKey(0));
+
+    mutate((currentData) => {
+      if (!currentData) return [newData];
+      return [newData, ...currentData.slice(1)];
+    }, false);
+  }, [mutate]);
+
   return {
     postsDataArr,
     error,
@@ -42,5 +51,6 @@ export const usePostListSWRInfinite = () => {
     loadMorePage,
     isReachingEnd,
     size,
+    refreshPosts,
   };
 };

@@ -11,12 +11,14 @@ import {
 } from "@yamada-ui/react";
 import { PiImageSquare, PiX } from "react-icons/pi";
 import { Carousel, CarouselSlide } from "@yamada-ui/carousel";
+import { usePostListSWRInfinite } from "../customHooks/usePostListSWRInfinite";
 
 export const PostForm = () => {
   const [content, setContent] = useState("");
   const [imageData, setImageData] = useState([]);
   const { handleSubmit } = usePost();
   const notice = useNotice();
+  const { refreshPosts } = usePostListSWRInfinite();
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -48,6 +50,8 @@ export const PostForm = () => {
         duration: 5000,
         isClosable: true,
       });
+
+      await refreshPosts();
     } catch (error) {
       console.error("投稿作成エラー:", error);
       notice({
