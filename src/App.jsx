@@ -1,3 +1,4 @@
+import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { SignUpPage } from "./pages/SignUpPage";
 import { UIProvider } from "@yamada-ui/react";
