@@ -17,6 +17,28 @@ export const PostImages = ({ post }) => {
   const imageCount = post.images.length;
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  const getGridColumn = (imageCount, index) => {
+    if (imageCount === 3) {
+      return index === 0 ? "1 / 2" : "2 / 3";
+    }
+    if (imageCount === 4) {
+      return index % 2 === 0 ? "1 / 2" : "2 / 3";
+    }
+    return "auto";
+  };
+
+  const getGridRow = (imageCount, index) => {
+    if (imageCount === 3) {
+      if (index === 0) return "1 / 3";
+      if (index === 1) return "1 / 2";
+      if (index === 2) return "2 / 3";
+    }
+    if (imageCount === 4) {
+      return index < 2 ? "1 / 2" : "2 / 3";
+    }
+    return "auto";
+  };
+
   return (
     <Box position="relative">
       <Grid
@@ -37,30 +59,8 @@ export const PostImages = ({ post }) => {
         {post.images.map((image, index) => (
           <GridItem
             key={image.id}
-            gridColumn={
-              imageCount === 3 && index === 0
-                ? "1 / 2"
-                : imageCount === 3 && index > 0
-                ? "2 / 3"
-                : imageCount === 4
-                ? index % 2 === 0
-                  ? "1 / 2"
-                  : "2 / 3"
-                : "auto"
-            }
-            gridRow={
-              imageCount === 3 && index === 0
-                ? "1 / 3"
-                : imageCount === 3 && index === 1
-                ? "1 / 2"
-                : imageCount === 3 && index === 2
-                ? "2 / 3"
-                : imageCount === 4
-                ? index < 2
-                  ? "1 / 2"
-                  : "2 / 3"
-                : "auto"
-            }
+            gridColumn={getGridColumn(imageCount, index)}
+            gridRow={getGridRow(imageCount, index)}
           >
             <Image
               src={`${BASE_URL}${image.url}`}
