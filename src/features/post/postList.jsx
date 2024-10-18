@@ -1,4 +1,4 @@
-import { PostItem } from "./components/postItem";
+import { PostItem } from "./components/PostItem";
 import { Box, Loading } from "@yamada-ui/react";
 import { usePostListSWRInfinite } from "./customHooks/usePostListSWRInfinite";
 import { PostLoading } from "./components/PostLoding";
@@ -17,7 +17,7 @@ export const PostList = () => {
         variant="oval"
         fontSize="2xl"
         color="blue.500"
-        mx={"auto"}
+        mx="auto"
         w="full"
         mt={6}
       />

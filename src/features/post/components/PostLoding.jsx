@@ -30,7 +30,7 @@ export const PostLoading = () => {
       variant="oval"
       fontSize="2xl"
       color="blue.500"
-      mx={"auto"}
+      mx="auto"
       w="full"
       my={3}
     />

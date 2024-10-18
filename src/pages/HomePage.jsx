@@ -1,6 +1,6 @@
 import { Box, Flex, VStack } from "@yamada-ui/react";
-import { PostForm } from "../features/post/components/postForm";
-import { PostList } from "../features/post/postList";
+import { PostForm } from "../features/post/components/PostForm";
+import { PostList } from "../features/post/PostList";
 
 export const HomePage = () => {
   return (
