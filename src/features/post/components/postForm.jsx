@@ -9,15 +9,16 @@ import {
   Textarea,
   useNotice,
 } from "@yamada-ui/react";
-import { uploadImage } from "../../../features/api/postApi";
 import { PiImageSquare, PiX } from "react-icons/pi";
 import { Carousel, CarouselSlide } from "@yamada-ui/carousel";
+import { usePostListSWRInfinite } from "../customHooks/usePostListSWRInfinite";
 
 export const PostForm = () => {
   const [content, setContent] = useState("");
   const [imageData, setImageData] = useState([]);
   const { handleSubmit } = usePost();
   const notice = useNotice();
+  const { refreshPosts } = usePostListSWRInfinite();
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -39,14 +40,7 @@ export const PostForm = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const postResponse = await handleSubmit({ content });
-
-      if (imageData.length > 0) {
-        const formData = new FormData();
-        imageData.forEach(({ file }) => formData.append("images[]", file));
-        formData.append("post_id", postResponse.data.id);
-        await uploadImage(formData);
-      }
+      await handleSubmit({ content }, imageData);
 
       setContent("");
       setImageData([]);
@@ -56,6 +50,8 @@ export const PostForm = () => {
         duration: 5000,
         isClosable: true,
       });
+
+      await refreshPosts();
     } catch (error) {
       console.error("投稿作成エラー:", error);
       notice({
@@ -78,7 +74,7 @@ export const PostForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <Flex width="full">
+      <Flex width="full" p={3} borderBottom="1px solid #dcdcde">
         <Box>
           <Avatar size="sm" />
         </Box>
