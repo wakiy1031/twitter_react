@@ -6,8 +6,10 @@ export const PostItem = ({ post }) => {
   const { id, content, user, created_at } = post;
   const navigate = useNavigate();
 
-  const handlePostClick = () => {
-    navigate(`/${user.name}/${id}`);
+  const handlePostClick = (e) => {
+    if (!e.defaultPrevented) {
+      navigate(`/${user.name}/${id}`);
+    }
   };
 
   return (
