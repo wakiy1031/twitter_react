@@ -26,3 +26,8 @@ export const uploadImage = async (data) => {
     throw error;
   }
 };
+
+export const fetchPost = async (id) => {
+  const response = await api.get(`${POSTS_ENDPOINT}/${id}`);
+  return response.data;
+};

@@ -122,6 +122,7 @@ export const PostImages = ({ post }) => {
                     src={`${BASE_URL}${image.url}`}
                     objectFit="contain"
                     objectPosition="center"
+                    bg="white"
                   />
                 </Box>
               </CarouselSlide>
