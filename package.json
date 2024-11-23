@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@yamada-ui/carousel": "^2.0.6",
+    "@yamada-ui/fontawesome": "^1.0.47",
+    "@yamada-ui/lucide": "^1.8.1",
     "@yamada-ui/react": "^1.5.0",
     "axios": "^1.7.7",
     "js-cookie": "^3.0.5",
