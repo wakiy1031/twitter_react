@@ -39,6 +39,12 @@ export const PostImages = ({ post }) => {
     return "auto";
   };
 
+  const handleImageClick = (e, index) => {
+    e.preventDefault();
+    setSelectedImageIndex(index);
+    onOpen();
+  };
+
   return (
     <Box position="relative">
       <Grid
@@ -68,10 +74,7 @@ export const PostImages = ({ post }) => {
               h="100%"
               objectFit="cover"
               objectPosition="center"
-              onClick={() => {
-                setSelectedImageIndex(index);
-                onOpen();
-              }}
+              onClick={(e) => handleImageClick(e, index)}
             />
           </GridItem>
         ))}
@@ -122,6 +125,7 @@ export const PostImages = ({ post }) => {
                     src={`${BASE_URL}${image.url}`}
                     objectFit="contain"
                     objectPosition="center"
+                    bg="white"
                   />
                 </Box>
               </CarouselSlide>

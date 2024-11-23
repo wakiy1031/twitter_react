@@ -5,6 +5,7 @@ import { UIProvider } from "@yamada-ui/react";
 import { HomePage } from "./pages/HomePage";
 import { RecoilRoot } from "recoil";
 import { useEffect } from "react";
+import { PostDetailPage } from "./pages/PostDetailPage";
 
 export const App = () => {
   useEffect(() => {
@@ -22,6 +23,7 @@ export const App = () => {
             <Route path="/login" element={<SignUpPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/home" element={<HomePage />} />
+            <Route path="/:username/:postId" element={<PostDetailPage />} />
           </Routes>
         </Router>
       </UIProvider>
