@@ -10,10 +10,11 @@ export const HistoryNavButton = () => {
   return (
     <Tooltip label="Back" openDelay={500} gutter={2} fontSize="xs">
       <Button
-        outline={"none"}
-        bg={"none"}
-        className="w-8 h-8"
-        borderRadius={9999}
+        outline="none"
+        bg="none"
+        borderRadius="full"
+        w={6}
+        p={1}
         rightIcon={<BiArrowBack />}
         onClick={goBack}
       ></Button>

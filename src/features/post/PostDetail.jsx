@@ -2,6 +2,8 @@ import { Box, Text, Flex, Avatar, Loading } from "@yamada-ui/react";
 import { PostImages } from "./components/postImages";
 import { usePostDetail } from "../../hooks/usePostDetail";
 import { useParams } from "react-router-dom";
+import { HistoryNavButton } from "../../components/HistoryNavButton";
+import { ActionButton } from "../../components/ActionButton";
 
 export const PostDetail = () => {
   const { postId } = useParams();
@@ -28,24 +30,38 @@ export const PostDetail = () => {
     return <div>投稿が見つかりません。</div>;
   }
 
-  const { content, user, created_at } = post;
+  const { content, user, post_create } = post;
 
   return (
     <Box borderBottom="1px solid #dcdcde" py={2} px={3}>
-      <Flex alignItems="start">
+      <Flex alignItems="center">
+        <HistoryNavButton />
+        <Text fontWeight="bold" ml={4} fontSize="xl">
+          Post
+        </Text>
+      </Flex>
+      <Flex alignItems="center" pt={5}>
         <Avatar size="sm" mr={2} />
-        <Box>
-          <Text>
-            <span className="font-bold">{user.name}</span>
-            <span className="text-gray-500 ml-1 text-sm">
-              @{user.username || user.name}
-            </span>
-            <span className="text-gray-500 text-sm">・{created_at}</span>
+        <Box lineHeight={1}>
+          <Text className="font-bold">{user.name}</Text>
+          <Text className="text-gray-500 text-sm">
+            @{user.username || user.name}
           </Text>
-          <Text mb={2}>{content}</Text>
-          <PostImages post={post} />
         </Box>
       </Flex>
+      <Text mb={2} pt={2}>
+        {content}
+      </Text>
+      <PostImages post={post} />
+      <Text
+        mb={2}
+        py={4}
+        className="text-gray-500"
+        borderBottom="1px solid #dcdcde"
+      >
+        {post_create}
+      </Text>
+      <ActionButton />
     </Box>
   );
 };

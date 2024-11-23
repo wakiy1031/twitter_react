@@ -9,13 +9,15 @@ import { HStack, IconButton, Tooltip } from "@yamada-ui/react";
 
 export const ActionButton = () => {
   return (
-    <HStack spacing="4" py="2" justify="space-between">
+    <HStack spacing="4" justify="space-between">
       <Tooltip label="返信" openDelay={500} gutter={2} fontSize="xs">
         <IconButton
           variant="ghost"
-          icon={<MessageCircleIcon />}
+          icon={<MessageCircleIcon w={20} />}
           aria-label="返信"
           size="sm"
+          w={6}
+          p={1}
           borderRadius="full"
           color="gray.500"
           _hover={{ bg: "blue.50", color: "blue.500" }}
@@ -24,9 +26,11 @@ export const ActionButton = () => {
       <Tooltip label="リポスト" openDelay={500} gutter={2} fontSize="xs">
         <IconButton
           variant="ghost"
-          icon={<RepeatIcon />}
+          icon={<RepeatIcon w={20} />}
           aria-label="リポスト"
           size="sm"
+          w={6}
+          p={1}
           borderRadius="full"
           color="gray.500"
           _hover={{ bg: "green.50", color: "green.500" }}
@@ -35,9 +39,11 @@ export const ActionButton = () => {
       <Tooltip label="いいね" openDelay={500} gutter={2} fontSize="xs">
         <IconButton
           variant="ghost"
-          icon={<HeartIcon />}
+          icon={<HeartIcon w={20} />}
           aria-label="いいね"
           size="sm"
+          w={6}
+          p={1}
           borderRadius="full"
           color="gray.500"
           _hover={{ bg: "red.50", color: "red.500" }}
@@ -46,9 +52,11 @@ export const ActionButton = () => {
       <Tooltip label="ブックマーク" openDelay={500} gutter={2} fontSize="xs">
         <IconButton
           variant="ghost"
-          icon={<BookmarkIcon />}
+          icon={<BookmarkIcon w={20} />}
           aria-label="ブックマーク"
           size="sm"
+          w={6}
+          p={1}
           borderRadius="full"
           color="gray.500"
           _hover={{ bg: "blue.50", color: "blue.500" }}
@@ -57,9 +65,11 @@ export const ActionButton = () => {
       <Tooltip label="共有" openDelay={500} gutter={2} fontSize="xs">
         <IconButton
           variant="ghost"
-          icon={<ShareIcon />}
+          icon={<ShareIcon w={20} />}
           aria-label="共有"
           size="sm"
+          w={6}
+          p={1}
           borderRadius="full"
           color="gray.500"
           _hover={{ bg: "blue.50", color: "blue.500" }}
