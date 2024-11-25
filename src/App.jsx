@@ -6,6 +6,9 @@ import { HomePage } from "./pages/HomePage";
 import { RecoilRoot } from "recoil";
 import { useEffect } from "react";
 import { PostDetailPage } from "./pages/PostDetailPage";
+import { UserPage } from "./pages/UserPage";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
 
 export const App = () => {
   useEffect(() => {
@@ -15,18 +18,21 @@ export const App = () => {
   }, []);
 
   return (
-    <RecoilRoot>
-      <UIProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<SignUpPage />} />
-            <Route path="/login" element={<SignUpPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/:username/:postId" element={<PostDetailPage />} />
-          </Routes>
-        </Router>
-      </UIProvider>
-    </RecoilRoot>
+    <Provider store={store}>
+      <RecoilRoot>
+        <UIProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<SignUpPage />} />
+              <Route path="/login" element={<SignUpPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/:username/:postId" element={<PostDetailPage />} />
+              <Route path="/users/:id" element={<UserPage />} />
+            </Routes>
+          </Router>
+        </UIProvider>
+      </RecoilRoot>
+    </Provider>
   );
 };

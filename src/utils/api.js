@@ -6,6 +6,7 @@ const DEFAULT_API_LOCALHOST = "http://localhost:3000/api/v1";
 export const SESSIONS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/auth/sessions`;
 export const IMAGES_ENDPOINT = `${DEFAULT_API_LOCALHOST}/images`;
 export const POSTS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/tweets`;
+export const USERS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/users`;
 
 export const api = axios.create({
   baseURL: DEFAULT_API_LOCALHOST,
