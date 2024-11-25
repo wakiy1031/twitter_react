@@ -13,6 +13,7 @@ export const HistoryNavButton = () => {
         outline="none"
         bg="none"
         borderRadius="full"
+        ml={-2.5}
         w={6}
         p={1}
         rightIcon={<BiArrowBack />}

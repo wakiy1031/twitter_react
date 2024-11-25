@@ -2,7 +2,20 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./userSlice";
-import { Text } from "@yamada-ui/react";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Image,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  VStack,
+} from "@yamada-ui/react";
+import { HistoryNavButton } from "../../components/HistoryNavButton";
 
 export const UserDetail = () => {
   const { id } = useParams();
@@ -14,8 +27,6 @@ export const UserDetail = () => {
       dispatch(fetchUser(id));
     }
   }, [dispatch, id]);
-
-  console.log("Current state:", { user, status, error });
 
   if (status === "loading") {
     return <div>読み込み中...</div>;
@@ -29,8 +40,61 @@ export const UserDetail = () => {
     return null;
   }
   return (
-    <>
-      <Text>{user.name}</Text>
-    </>
+    <VStack>
+      <Flex alignItems="center" position="sticky" top={0} py={2} px={3}>
+        <HistoryNavButton />
+        <Text ml={4} fontSize="xl">
+          <span className="font-bold leading-4 block">{user.name}</span>
+          <span className="text-gray-500 text-sm">
+            {user.posts_count}件のポスト
+          </span>
+        </Text>
+      </Flex>
+      <Box>
+        <Image src={user.cover_image} alt="cover" />
+      </Box>
+      <Box px={4} py={2}>
+        <Avatar src={user.avatar} size="xl" />
+        <Box lineHeight={1.25}>
+          <Text className="font-bold" fontSize="xl">
+            {user.name}
+          </Text>
+          <Text className="text-gray-500">@{user.username || user.name}</Text>
+        </Box>
+        <Text>{user.bio}</Text>
+        <Flex>
+          <Text>
+            <span className="font-bold mr-1">{user.followers_count || 0}</span>
+            <span className="text-gray-500">フォロワー</span>
+          </Text>
+          <Text>
+            <span className="font-bold mr-1">{user.following_count || 0}</span>
+            <span className="text-gray-500">フォロー中</span>
+          </Text>
+        </Flex>
+      </Box>
+      <Tabs variant="sticky" isFitted>
+        <TabList>
+          <Tab>ポスト</Tab>
+          <Tab>返信</Tab>
+          <Tab>メディア</Tab>
+          <Tab>いいね</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <Text>ポスト</Text>
+          </TabPanel>
+          <TabPanel>
+            <Text>返信</Text>
+          </TabPanel>
+          <TabPanel>
+            <Text>メディア</Text>
+          </TabPanel>
+          <TabPanel>
+            <Text>いいね</Text>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </VStack>
   );
 };

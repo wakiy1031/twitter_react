@@ -23,7 +23,7 @@ export const PostItem = ({ post }) => {
     <Box
       borderBottom="1px solid #dcdcde"
       py={2}
-      px={3}
+      px={4}
       onClick={handlePostClick}
       cursor="pointer"
     >

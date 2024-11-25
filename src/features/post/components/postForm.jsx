@@ -74,7 +74,7 @@ export const PostForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <Flex width="full" p={3} borderBottom="1px solid #dcdcde">
+      <Flex width="full" py={3} px={4} borderBottom="1px solid #dcdcde">
         <Box>
           <Avatar size="sm" />
         </Box>
