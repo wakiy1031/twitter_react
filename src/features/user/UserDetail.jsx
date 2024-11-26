@@ -16,6 +16,7 @@ import {
   VStack,
 } from "@yamada-ui/react";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
+import { PostItem } from "../post/components/PostItem";
 
 export const UserDetail = () => {
   const { id } = useParams();
@@ -75,14 +76,44 @@ export const UserDetail = () => {
       </Box>
       <Tabs variant="sticky" isFitted>
         <TabList>
-          <Tab>ポスト</Tab>
-          <Tab>返信</Tab>
-          <Tab>メディア</Tab>
-          <Tab>いいね</Tab>
+          <Tab
+            _selected={{
+              borderBottom: "2px solid #0070f3",
+              fontWeight: "bold",
+            }}
+          >
+            ポスト
+          </Tab>
+          <Tab
+            _selected={{
+              borderBottom: "2px solid #0070f3",
+              fontWeight: "bold",
+            }}
+          >
+            返信
+          </Tab>
+          <Tab
+            _selected={{
+              borderBottom: "2px solid #0070f3",
+              fontWeight: "bold",
+            }}
+          >
+            メディア
+          </Tab>
+          <Tab
+            _selected={{
+              borderBottom: "2px solid #0070f3",
+              fontWeight: "bold",
+            }}
+          >
+            いいね
+          </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
-            <Text>ポスト</Text>
+          <TabPanel p={0}>
+            {user?.tweets?.map((post) => (
+              <PostItem key={post.id} post={post} />
+            ))}
           </TabPanel>
           <TabPanel>
             <Text>返信</Text>
