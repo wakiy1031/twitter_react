@@ -5,6 +5,7 @@ import { fetchUser } from "./userSlice";
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Image,
   Tab,
@@ -56,6 +57,37 @@ export const UserDetail = () => {
       </Box>
       <Box px={4} py={2}>
         <Avatar src={user.avatar} size="xl" />
+        <Box>
+          {user.is_self ? (
+            <Button variant="outline">プロフィール編集</Button>
+          ) : user.is_following ? (
+            <Button
+              variant="outline"
+              _hover={{
+                bg: "red.50",
+                borderColor: "red.500",
+                color: "red.500",
+              }}
+              data-hover-text="フォロー解除"
+              sx={{
+                "&[data-hover-text]": {
+                  "&:hover": {
+                    "& > span:first-of-type": {
+                      display: "none",
+                    },
+                    "&::before": {
+                      content: "attr(data-hover-text)",
+                    },
+                  },
+                },
+              }}
+            >
+              <span>フォロー中</span>
+            </Button>
+          ) : (
+            <Button colorScheme="blue">フォロー</Button>
+          )}
+        </Box>
         <Box lineHeight={1.25}>
           <Text className="font-bold" fontSize="xl">
             {user.name}

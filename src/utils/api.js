@@ -10,6 +10,9 @@ export const USERS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/users`;
 
 export const api = axios.create({
   baseURL: DEFAULT_API_LOCALHOST,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 api.interceptors.request.use(
