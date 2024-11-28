@@ -5,11 +5,25 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@yamada-ui/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export const UserProfileEditModal = ({ isOpen: propIsOpen, onClose }) => {
+export const UserProfileEditModal = ({
+  isOpen: propIsOpen,
+  onClose: propOnClose,
+}) => {
   const location = useLocation();
-  const isOpen = propIsOpen ?? location.pathname === "/settings/profile";
+  const navigate = useNavigate();
+  const isOpen = propIsOpen ?? location.state?.isModal;
+
+  const onClose = () => {
+    if (propOnClose) {
+      propOnClose();
+    } else {
+      navigate(-1, {
+        replace: true,
+      });
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl" px={8} py={4}>

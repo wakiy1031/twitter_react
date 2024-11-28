@@ -1,12 +1,26 @@
 import { Button, Tooltip } from "@yamada-ui/react";
 import { BiArrowBack } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const HistoryNavButton = () => {
-  let navigate = useNavigate();
-  let goBack = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const goBack = () => {
+    const isFromModal = location.state?.fromModal;
+    const isModal = location.state?.isModal;
+
+    if (isModal) {
+      return;
+    }
+
+    if (isFromModal) {
+      navigate(-2);
+      return;
+    }
     navigate(-1);
   };
+
   return (
     <Tooltip label="Back" openDelay={500} gutter={2} fontSize="xs">
       <Button

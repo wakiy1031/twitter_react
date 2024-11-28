@@ -70,6 +70,9 @@ export const UserDetail = () => {
 
   const showProfileEditModal = location.pathname === "/settings/profile";
 
+  console.log("Current location state:", location.state);
+  console.log("isModal:", location.state?.isModal);
+
   return (
     <VStack>
       <Flex alignItems="center" position="sticky" top={0} py={2} px={3}>
@@ -90,7 +93,15 @@ export const UserDetail = () => {
           {user.is_self ? (
             <Button
               variant="outline"
-              onClick={() => navigate("/settings/profile")}
+              onClick={() =>
+                navigate("/settings/profile", {
+                  replace: true,
+                  state: {
+                    isModal: true,
+                    preventReload: true,
+                  },
+                })
+              }
             >
               プロフィール編集
             </Button>
