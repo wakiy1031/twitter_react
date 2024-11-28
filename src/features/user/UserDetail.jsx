@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./userSlice";
 import {
@@ -14,21 +14,39 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useDisclosure,
   VStack,
 } from "@yamada-ui/react";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
 import { PostItem } from "../post/components/PostItem";
+import { UserProfileEditModal } from "./components/UserProfileEditModal";
 
 export const UserDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { user, status, error } = useSelector((state) => state.user);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { onClose: onProfileEditClose } = useDisclosure();
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchUser(id));
+    let isSubscribed = true;
+
+    if (id && !location.state?.preventReload) {
+      dispatch(fetchUser(id))
+        .unwrap()
+        .catch((error) => {
+          if (isSubscribed) {
+            console.error("ユーザー情報の取得に失敗しました:", error);
+          }
+        });
     }
-  }, [dispatch, id]);
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [dispatch, id, location.state]);
 
   if (status === "loading") {
     return <div>読み込み中...</div>;
@@ -41,6 +59,17 @@ export const UserDetail = () => {
   if (!user) {
     return null;
   }
+
+  const handleCloseProfileEdit = () => {
+    onProfileEditClose();
+    navigate(`/users/${user.id}`, {
+      replace: true,
+      state: { preventReload: true },
+    });
+  };
+
+  const showProfileEditModal = location.pathname === "/settings/profile";
+
   return (
     <VStack>
       <Flex alignItems="center" position="sticky" top={0} py={2} px={3}>
@@ -59,7 +88,12 @@ export const UserDetail = () => {
         <Avatar src={user.avatar} size="xl" />
         <Box>
           {user.is_self ? (
-            <Button variant="outline">プロフィール編集</Button>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/settings/profile")}
+            >
+              プロフィール編集
+            </Button>
           ) : user.is_following ? (
             <Button
               variant="outline"
@@ -106,7 +140,7 @@ export const UserDetail = () => {
           </Text>
         </Flex>
       </Box>
-      <Tabs variant="sticky" isFitted>
+      <Tabs isFitted>
         <TabList>
           <Tab
             _selected={{
@@ -158,6 +192,9 @@ export const UserDetail = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      {showProfileEditModal && (
+        <UserProfileEditModal isOpen={true} onClose={handleCloseProfileEdit} />
+      )}
     </VStack>
   );
 };

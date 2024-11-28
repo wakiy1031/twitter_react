@@ -29,6 +29,7 @@ export const App = () => {
               <Route path="/home" element={<HomePage />} />
               <Route path="/:username/:postId" element={<PostDetailPage />} />
               <Route path="/users/:id" element={<UserPage />} />
+              <Route path="/settings/profile" element={<UserPage />} />
             </Routes>
           </Router>
         </UIProvider>

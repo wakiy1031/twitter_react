@@ -4,26 +4,31 @@ import Cookies from "js-cookie";
 import { api, SESSIONS_ENDPOINT } from "../../utils/api";
 
 const getCurrentUserId = async () => {
-  const accessToken = Cookies.get("_access_token");
-  const client = Cookies.get("_client");
-  const uid = Cookies.get("_uid");
-
-  if (!accessToken || !client || !uid) {
-    return null;
-  }
-
   try {
-    const res = await api.get(SESSIONS_ENDPOINT, {
-      headers: {
-        "access-token": accessToken,
-        client: client,
-        uid: uid,
-      },
+    const accessToken = Cookies.get("_access_token");
+    const client = Cookies.get("_client");
+    const uid = Cookies.get("_uid");
+
+    if (!accessToken || !client || !uid) {
+      console.log("認証情報が不足しています");
+      return null;
+    }
+
+    const headers = {
+      "access-token": accessToken,
+      client: client,
+      uid: uid,
+    };
+
+    const res = await api.get(SESSIONS_ENDPOINT, { headers }).catch((error) => {
+      console.error("セッション確認中にエラーが発生しました:", error);
+      return { status: 401 };
     });
 
-    if (res.status === 200) {
+    if (res?.status === 200 && res?.data?.data?.id) {
       return res.data.data.id;
     }
+
     return null;
   } catch (error) {
     console.error("ユーザーID取得中にエラーが発生しました:", error);
