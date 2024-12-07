@@ -6,6 +6,7 @@ import {
   ModalOverlay,
 } from "@yamada-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { UserProfileEditForm } from "./UserProfileEditForm";
 
 export const UserProfileEditModal = ({
   isOpen: propIsOpen,
@@ -30,7 +31,9 @@ export const UserProfileEditModal = ({
       <ModalOverlay />
       <ModalHeader>プロフィールを編集</ModalHeader>
       <ModalCloseButton />
-      <ModalBody>{/* TODO: プロフィール編集フォームを実装する */}</ModalBody>
+      <ModalBody>
+        <UserProfileEditForm onSuccess={onClose} />
+      </ModalBody>
     </Modal>
   );
 };
