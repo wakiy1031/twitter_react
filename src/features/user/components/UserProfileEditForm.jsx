@@ -2,9 +2,11 @@ import { Button, FormControl } from "@yamada-ui/react";
 import { FloatingInput } from "../../../components/FloatingInput";
 import { useState } from "react";
 import { updateUserProfile } from "../../api/userApi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUser } from "../userSlice";
 
 export const UserProfileEditForm = ({ onSuccess }) => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     user_name: user.user_name,
@@ -23,9 +25,9 @@ export const UserProfileEditForm = ({ onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateUserProfile(formData);
-
-      onSuccess();
+      const updatedUser = await updateUserProfile(formData);
+      dispatch(fetchUser(user.id));
+      onSuccess(updatedUser);
     } catch (error) {
       console.error("プロフィール更新中にエラーが発生しました:", error);
     }

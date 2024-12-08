@@ -33,22 +33,26 @@ export const UserDetail = () => {
   useEffect(() => {
     let isSubscribed = true;
 
-    if (id && !location.state?.preventReload) {
-      dispatch(fetchUser(id))
-        .unwrap()
-        .catch((error) => {
-          if (isSubscribed) {
-            console.error("ユーザー情報の取得に失敗しました:", error);
-          }
-        });
-    }
+    const fetchUserData = async () => {
+      if (!id || location.state?.preventReload) return;
+
+      try {
+        await dispatch(fetchUser(id)).unwrap();
+      } catch (error) {
+        if (isSubscribed) {
+          console.error("ユーザー情報の取得に失敗しました:", error);
+        }
+      }
+    };
+
+    fetchUserData();
 
     return () => {
       isSubscribed = false;
     };
-  }, [dispatch, id, location.state]);
+  }, [dispatch, id, location.state?.preventReload]);
 
-  if (status === "loading") {
+  if (status === "loading" && !user) {
     return <div>読み込み中...</div>;
   }
 
@@ -139,7 +143,7 @@ export const UserDetail = () => {
           </Text>
           <Text className="text-gray-500">@{user.username || user.name}</Text>
         </Box>
-        <Text>{user.bio}</Text>
+        <Text>{user.description}</Text>
         <Flex>
           <Text>
             <span className="font-bold mr-1">{user.followers_count || 0}</span>
