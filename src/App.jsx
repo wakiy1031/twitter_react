@@ -9,6 +9,17 @@ import { PostDetailPage } from "./pages/PostDetailPage";
 import { UserPage } from "./pages/UserPage";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
+import { useLocation } from "react-router-dom";
+
+export const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 export const App = () => {
   useEffect(() => {
@@ -22,6 +33,7 @@ export const App = () => {
       <RecoilRoot>
         <UIProvider>
           <Router>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<SignUpPage />} />
               <Route path="/login" element={<SignUpPage />} />
