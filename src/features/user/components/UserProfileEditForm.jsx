@@ -9,7 +9,7 @@ export const UserProfileEditForm = ({ onSuccess }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
-    user_name: user.user_name,
+    name: user.name,
     description: user.description,
     website: user.website,
   });
@@ -37,11 +37,11 @@ export const UserProfileEditForm = ({ onSuccess }) => {
     <form onSubmit={handleSubmit}>
       <FormControl>
         <FloatingInput
-          id="user_name"
-          name="user_name"
+          id="name"
+          name="name"
           type="text"
           placeholder="ユーザーネーム"
-          value={formData.user_name}
+          value={formData.name}
           onChange={handleChange}
         />
       </FormControl>

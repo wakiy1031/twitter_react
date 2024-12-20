@@ -62,7 +62,7 @@ export const PostDetail = () => {
             onClick={handleUserClick}
             cursor="pointer"
           >
-            @{user.username || user.name}
+            @{user.email?.split("@")[0]}
           </Text>
         </Box>
       </Flex>

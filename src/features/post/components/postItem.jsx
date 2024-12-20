@@ -43,7 +43,7 @@ export const PostItem = ({ post }) => {
               onClick={handleUserClick}
               cursor="pointer"
             >
-              @{user.username ? user.username : user.name}
+              @{user.email?.split("@")[0]}
             </span>
             <Tooltip
               label={post_create}

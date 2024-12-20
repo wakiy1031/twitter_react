@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./userSlice";
 import {
@@ -82,7 +82,7 @@ export const UserDetail = () => {
       <Flex alignItems="center" position="sticky" top={0} py={2} px={3}>
         <HistoryNavButton />
         <Text ml={4} fontSize="xl">
-          <span className="font-bold leading-4 block">{user.user_name}</span>
+          <span className="font-bold leading-4 block">{user.name}</span>
           <span className="text-gray-500 text-sm">
             {user.posts_count}件のポスト
           </span>
@@ -139,11 +139,12 @@ export const UserDetail = () => {
         </Box>
         <Box lineHeight={1.25}>
           <Text className="font-bold" fontSize="xl">
-            {user.user_name}
+            {user.name}
           </Text>
-          <Text className="text-gray-500">@{user.username || user.name}</Text>
+          <Text className="text-gray-500">@{user.email?.split("@")[0]}</Text>
         </Box>
         <Text>{user.description}</Text>
+        <Link to={user.website}>{user.website}</Link>
         <Flex>
           <Text>
             <span className="font-bold mr-1">{user.followers_count || 0}</span>
