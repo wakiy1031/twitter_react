@@ -64,8 +64,19 @@ export const UserDetail = () => {
     return null;
   }
 
-  const handleCloseProfileEdit = () => {
+  const refreshUserData = async () => {
+    try {
+      await dispatch(
+        fetchUser(user.id, { timestamp: new Date().getTime() })
+      ).unwrap();
+    } catch (error) {
+      console.error("ユーザー情報の再取得に失敗:", error);
+    }
+  };
+
+  const handleCloseProfileEdit = async () => {
     onProfileEditClose();
+    await refreshUserData();
     navigate(`/users/${user.id}`, {
       replace: true,
       state: { preventReload: true },
@@ -73,9 +84,6 @@ export const UserDetail = () => {
   };
 
   const showProfileEditModal = location.pathname === "/settings/profile";
-
-  console.log("Current location state:", location.state);
-  console.log("isModal:", location.state?.isModal);
 
   return (
     <VStack>
@@ -92,7 +100,12 @@ export const UserDetail = () => {
         <Image src={user.cover_image} alt="cover" />
       </Box>
       <Box px={4} py={2}>
-        <Avatar src={user.avatar} size="xl" />
+        <Avatar
+          src={`${user.avatar_url}?${new Date(user.updated_at).getTime()}`}
+          size="xl"
+          key={user.updated_at}
+          fallback={<Avatar size="xl" name={user.name} />}
+        />
         <Box>
           {user.is_self ? (
             <Button

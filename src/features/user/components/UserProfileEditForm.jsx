@@ -1,4 +1,4 @@
-import { Button, FormControl } from "@yamada-ui/react";
+import { Button, FormControl, Avatar } from "@yamada-ui/react";
 import { FloatingInput } from "../../../components/FloatingInput";
 import { useState } from "react";
 import { updateUserProfile } from "../../api/userApi";
@@ -12,7 +12,9 @@ export const UserProfileEditForm = ({ onSuccess }) => {
     name: user.name,
     description: user.description,
     website: user.website,
+    avatar_image: null,
   });
+  const [previewUrl, setPreviewUrl] = useState(user.avatar);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,6 +22,25 @@ export const UserProfileEditForm = ({ onSuccess }) => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        avatar_image: file,
+      }));
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.onerror = (error) => {
+        console.error("プレビュー生成エラー:", error);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -35,6 +56,25 @@ export const UserProfileEditForm = ({ onSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <FormControl>
+        <Avatar src={previewUrl} size="xl" />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          style={{ display: "none" }}
+          id="avatar-input"
+        />
+        <Button
+          as="label"
+          htmlFor="avatar-input"
+          variant="outline"
+          size="sm"
+          mt={2}
+        >
+          画像を変更
+        </Button>
+      </FormControl>
       <FormControl>
         <FloatingInput
           id="name"

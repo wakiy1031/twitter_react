@@ -28,7 +28,14 @@ export const PostItem = ({ post }) => {
       cursor="pointer"
     >
       <Flex alignItems="start">
-        <Avatar size="sm" mr={2} onClick={handleUserClick} cursor="pointer" />
+        <Avatar
+          size="sm"
+          mr={2}
+          onClick={handleUserClick}
+          cursor="pointer"
+          src={user.avatar_url}
+          fallback={<Avatar size="sm" name={user.name} />}
+        />
         <Box w="full">
           <Text>
             <span
