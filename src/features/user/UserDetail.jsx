@@ -96,9 +96,19 @@ export const UserDetail = () => {
           </span>
         </Text>
       </Flex>
-      <Box>
-        <Image src={user.cover_image} alt="cover" />
-      </Box>
+      {user.header_image_url ? (
+        <Box>
+          <Image
+            src={user.header_image_url}
+            alt="cover"
+            width="100%"
+            height="200px"
+          />
+        </Box>
+      ) : (
+        <Box bg="gray.200" height="200px" />
+      )}
+
       <Box px={4} py={2}>
         <Avatar
           src={`${user.avatar_url}?${new Date(user.updated_at).getTime()}`}

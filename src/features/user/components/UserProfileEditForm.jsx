@@ -1,9 +1,18 @@
-import { Button, FormControl, Avatar } from "@yamada-ui/react";
+import {
+  Button,
+  FormControl,
+  Avatar,
+  Image,
+  Flex,
+  Box,
+} from "@yamada-ui/react";
 import { FloatingInput } from "../../../components/FloatingInput";
 import { useState } from "react";
 import { updateUserProfile } from "../../api/userApi";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser } from "../userSlice";
+import { RiCameraLine } from "react-icons/ri";
+import { IoMdClose } from "react-icons/io";
 
 export const UserProfileEditForm = ({ onSuccess }) => {
   const dispatch = useDispatch();
@@ -13,8 +22,12 @@ export const UserProfileEditForm = ({ onSuccess }) => {
     description: user.description,
     website: user.website,
     avatar_image: null,
+    header_image: null,
   });
-  const [previewUrl, setPreviewUrl] = useState(user.avatar);
+  const [previewUrl, setPreviewUrl] = useState(user.avatar_url);
+  const [previewHeaderUrl, setPreviewHeaderUrl] = useState(
+    user.header_image_url
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,6 +56,30 @@ export const UserProfileEditForm = ({ onSuccess }) => {
     }
   };
 
+  const handleHeaderImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        header_image: file,
+      }));
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewHeaderUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveHeaderImage = () => {
+    setFormData((prev) => ({
+      ...prev,
+      header_image: null,
+    }));
+    setPreviewHeaderUrl(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -55,7 +92,100 @@ export const UserProfileEditForm = ({ onSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="w-full">
+      <FormControl position="relative">
+        {previewHeaderUrl ? (
+          <>
+            <Image
+              src={previewHeaderUrl}
+              alt="cover"
+              width="100%"
+              height="200px"
+            />
+            <Flex
+              align="center"
+              gap={2}
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+            >
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleHeaderImageChange}
+                style={{ display: "none" }}
+                id="header-input"
+              />
+              <Button
+                as="label"
+                htmlFor="header-input"
+                variant="outline"
+                size="sm"
+                mt={2}
+                border="none"
+                borderRadius="full"
+                w="44px"
+                h="44px"
+                backdropFilter="blur(4px)"
+                backgroundColor="rgba(15, 20, 25, 0.75)"
+                _hover={{
+                  opacity: 0.6,
+                }}
+              >
+                <RiCameraLine className="w-6 h-6 text-white" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                mt={2}
+                onClick={handleRemoveHeaderImage}
+                border="none"
+                borderRadius="full"
+                w="44px"
+                h="44px"
+                backdropFilter="blur(4px)"
+                backgroundColor="rgba(15, 20, 25, 0.75)"
+                _hover={{
+                  opacity: 0.6,
+                }}
+              >
+                <IoMdClose className="w-6 h-6 text-white" />
+              </Button>
+            </Flex>
+          </>
+        ) : (
+          <Box position="relative">
+            <Image
+              src={previewHeaderUrl}
+              alt="cover"
+              width="100%"
+              height="200px"
+              backgroundColor="gray.500"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleHeaderImageChange}
+              style={{ display: "none" }}
+              id="header-input"
+            />
+            <Button
+              as="label"
+              htmlFor="header-input"
+              variant="outline"
+              size="sm"
+              mt={2}
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+            >
+              <RiCameraLine />
+            </Button>
+          </Box>
+        )}
+      </FormControl>
       <FormControl>
         <Avatar src={previewUrl} size="xl" />
         <input

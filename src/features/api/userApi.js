@@ -8,13 +8,16 @@ export const getUser = async (id) => {
 export const updateUserProfile = async (userData) => {
   const formData = new FormData();
 
-  if (userData.avatar_image) {
-    formData.append("user[avatar_image]", userData.avatar_image);
-  }
-
+  // フォームデータの構築
   Object.keys(userData).forEach((key) => {
-    if (key !== "avatar_image") {
-      formData.append(`user[${key}]`, userData[key]);
+    if (userData[key] !== undefined && userData[key] !== null) {
+      if (key === "avatar_image" || key === "header_image") {
+        if (userData[key] instanceof File) {
+          formData.append(`user[${key}]`, userData[key]);
+        }
+      } else {
+        formData.append(`user[${key}]`, userData[key]);
+      }
     }
   });
 
