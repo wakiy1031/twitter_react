@@ -21,8 +21,8 @@ export const UserProfileEditForm = ({ onSuccess }) => {
     name: user.name,
     description: user.description,
     website: user.website,
-    avatar_image: null,
-    header_image: null,
+    avatar_image: "",
+    header_image: "",
   });
   const [previewUrl, setPreviewUrl] = useState(user.avatar_url);
   const [previewHeaderUrl, setPreviewHeaderUrl] = useState(
@@ -83,7 +83,22 @@ export const UserProfileEditForm = ({ onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const updatedUser = await updateUserProfile(formData);
+      // 現在の画像の状態を確認
+      const updateData = {
+        ...formData,
+        // avatar_imageがnullでない場合のみ、削除フラグを送信
+        avatar_image:
+          formData.avatar_image === null
+            ? null
+            : formData.avatar_image || undefined,
+        // header_imageがnullでない場合のみ、削除フラグを送信
+        header_image:
+          formData.header_image === null
+            ? null
+            : formData.header_image || undefined,
+      };
+
+      const updatedUser = await updateUserProfile(updateData);
       dispatch(fetchUser(user.id));
       onSuccess(updatedUser);
     } catch (error) {
@@ -155,14 +170,12 @@ export const UserProfileEditForm = ({ onSuccess }) => {
             </Flex>
           </>
         ) : (
-          <Box position="relative">
-            <Image
-              src={previewHeaderUrl}
-              alt="cover"
-              width="100%"
-              height="200px"
-              backgroundColor="gray.500"
-            />
+          <Box
+            position="relative"
+            width="100%"
+            height="200px"
+            backgroundColor="gray.600"
+          >
             <input
               type="file"
               accept="image/*"
@@ -180,8 +193,18 @@ export const UserProfileEditForm = ({ onSuccess }) => {
               top="50%"
               left="50%"
               transform="translate(-50%, -50%)"
+              border="none"
+              borderRadius="full"
+              w="44px"
+              h="44px"
+              background="none"
+              backdropFilter="blur(4px)"
+              backgroundColor="rgba(15, 20, 25, 0.75)"
+              _hover={{
+                opacity: 0.6,
+              }}
             >
-              <RiCameraLine />
+              <RiCameraLine className="w-6 h-6 text-white" />
             </Button>
           </Box>
         )}

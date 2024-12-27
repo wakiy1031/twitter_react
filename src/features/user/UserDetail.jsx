@@ -99,7 +99,9 @@ export const UserDetail = () => {
       {user.header_image_url ? (
         <Box>
           <Image
-            src={user.header_image_url}
+            src={`${user.header_image_url}?${new Date(
+              user.updated_at
+            ).getTime()}`}
             alt="cover"
             width="100%"
             height="200px"

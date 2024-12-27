@@ -10,18 +10,23 @@ export const updateUserProfile = async (userData) => {
 
   // フォームデータの構築
   Object.keys(userData).forEach((key) => {
-    if (userData[key] !== undefined && userData[key] !== null) {
-      if (key === "avatar_image" || key === "header_image") {
-        if (userData[key] instanceof File) {
-          formData.append(`user[${key}]`, userData[key]);
-        }
-      } else {
+    if (key === "avatar_image" || key === "header_image") {
+      if (userData[key] instanceof File) {
+        // ファイルが存在する場合はアップロード
         formData.append(`user[${key}]`, userData[key]);
+      } else if (userData[key] === null) {
+        // nullの場合は削除フラグを送信
+        formData.append(`user[remove_${key}]`, "true");
       }
+    } else if (userData[key] !== undefined && userData[key] !== null) {
+      formData.append(`user[${key}]`, userData[key]);
     }
   });
 
-  // リクエストの詳細をログ出力
+  // デバッグ用：送信するデータの確認
+  for (let pair of formData.entries()) {
+    console.log("送信データ:", pair[0], pair[1]);
+  }
 
   try {
     const response = await api.patch("/profile", formData, {
