@@ -27,11 +27,13 @@ export const UserProfileEditModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="2xl" px={8} py={4}>
+    <Modal isOpen={isOpen} onClose={onClose} size="2xl" px="0" py="4">
       <ModalOverlay />
-      <ModalHeader>プロフィールを編集</ModalHeader>
-      <ModalCloseButton />
-      <ModalBody>
+      <ModalHeader pt="0" pl="3em">
+        プロフィールを編集
+      </ModalHeader>
+      <ModalCloseButton left="var(--ui-spaces-3)" top="var(--ui-spaces-4)" />
+      <ModalBody px="0">
         <UserProfileEditForm onSuccess={onClose} />
       </ModalBody>
     </Modal>

@@ -137,7 +137,6 @@ export const UserProfileEditForm = ({ onSuccess }) => {
                 htmlFor="header-input"
                 variant="outline"
                 size="sm"
-                mt={2}
                 border="none"
                 borderRadius="full"
                 w="44px"
@@ -153,7 +152,6 @@ export const UserProfileEditForm = ({ onSuccess }) => {
               <Button
                 variant="outline"
                 size="sm"
-                mt={2}
                 onClick={handleRemoveHeaderImage}
                 border="none"
                 borderRadius="full"
@@ -174,7 +172,7 @@ export const UserProfileEditForm = ({ onSuccess }) => {
             position="relative"
             width="100%"
             height="200px"
-            backgroundColor="gray.600"
+            backgroundColor="gray.200"
           >
             <input
               type="file"
@@ -188,7 +186,6 @@ export const UserProfileEditForm = ({ onSuccess }) => {
               htmlFor="header-input"
               variant="outline"
               size="sm"
-              mt={2}
               position="absolute"
               top="50%"
               left="50%"
@@ -209,57 +206,102 @@ export const UserProfileEditForm = ({ onSuccess }) => {
           </Box>
         )}
       </FormControl>
-      <FormControl>
-        <Avatar src={previewUrl} size="xl" />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          style={{ display: "none" }}
-          id="avatar-input"
-        />
-        <Button
-          as="label"
-          htmlFor="avatar-input"
-          variant="outline"
-          size="sm"
-          mt={2}
-        >
-          画像を変更
-        </Button>
-      </FormControl>
-      <FormControl>
-        <FloatingInput
-          id="name"
-          name="name"
-          type="text"
-          placeholder="ユーザーネーム"
-          value={formData.name}
-          onChange={handleChange}
-        />
-      </FormControl>
-      <FormControl>
-        <FloatingInput
-          id="description"
-          name="description"
-          type="text"
-          placeholder="自己紹介"
-          value={formData.description}
-          onChange={handleChange}
-        />
-      </FormControl>
-      <FormControl>
-        <FloatingInput
-          id="website"
-          name="website"
-          type="text"
-          placeholder="ウェブサイト"
-          value={formData.website}
-          onChange={handleChange}
-        />
-      </FormControl>
-      <Button type="submit" colorScheme="blue">
-        更新
+      <Box mx="4">
+        <FormControl position="relative" w="112px" h="112px" mt="-56px" mb="6">
+          <Avatar
+            src={previewUrl}
+            width="100%"
+            height="100%"
+            position="relative"
+            backgroundColor="rgba(0, 0, 0, 0.3)"
+            border="3px solid #000"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+            id="avatar-input"
+          />
+
+          <Button
+            as="label"
+            htmlFor="avatar-input"
+            variant="outline"
+            size="sm"
+            position="absolute"
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            border="none"
+            borderRadius="full"
+            w="44px"
+            h="44px"
+            background="none"
+            backdropFilter="blur(2px)"
+            backgroundColor="rgba(15, 20, 25, 0.75)"
+            _hover={{
+              opacity: 0.6,
+            }}
+          >
+            <RiCameraLine className="w-6 h-6 text-white" />
+          </Button>
+        </FormControl>
+        <FormControl mb="6">
+          <FloatingInput
+            id="name"
+            name="name"
+            type="text"
+            placeholder="ユーザーネーム"
+            value={formData.name}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl mb="6">
+          <FloatingInput
+            id="description"
+            name="description"
+            type="text"
+            placeholder="自己紹介"
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl mb="6">
+          <FloatingInput
+            id="place"
+            name="place"
+            type="text"
+            placeholder="場所"
+            value={formData.place}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl>
+          <FloatingInput
+            id="website"
+            name="website"
+            type="text"
+            placeholder="ウェブサイト"
+            value={formData.website}
+            onChange={handleChange}
+          />
+        </FormControl>
+      </Box>
+      <Button
+        type="submit"
+        colorScheme="white"
+        position="absolute"
+        top="16px"
+        right="16px"
+        borderRadius="30px"
+        color="gray.900"
+        border="1px solid"
+        height="30px"
+        fontWeight="bold"
+        lineHeight="30px"
+      >
+        保存
       </Button>
     </form>
   );

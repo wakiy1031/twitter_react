@@ -48,7 +48,13 @@ export const PostDetail = () => {
         </Text>
       </Flex>
       <Flex alignItems="center" pt={5}>
-        <Avatar size="sm" mr={2} onClick={handleUserClick} cursor="pointer" />
+        <Avatar
+          size="sm"
+          mr={2}
+          onClick={handleUserClick}
+          cursor="pointer"
+          src={user.avatar_url}
+        />
         <Box lineHeight={1}>
           <Text
             className="font-bold"
