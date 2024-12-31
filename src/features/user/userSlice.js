@@ -46,10 +46,21 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async (userId) => {
   };
 });
 
+export const fetchCurrentUser = createAsyncThunk(
+  "user/fetchCurrentUser",
+  async () => {
+    const currentUserId = await getCurrentUserId();
+    if (!currentUserId) return null;
+    const response = await getUser(currentUserId);
+    return response;
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
     user: null,
+    currentUser: null,
     status: "idle",
     error: null,
   },
@@ -64,6 +75,17 @@ const userSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(fetchUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(fetchCurrentUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.currentUser = action.payload;
+      })
+      .addCase(fetchCurrentUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
