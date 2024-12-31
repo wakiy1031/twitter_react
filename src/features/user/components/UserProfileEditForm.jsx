@@ -5,6 +5,7 @@ import {
   Image,
   Flex,
   Box,
+  Tooltip,
 } from "@yamada-ui/react";
 import { FloatingInput } from "../../../components/FloatingInput";
 import { useState } from "react";
@@ -132,39 +133,53 @@ export const UserProfileEditForm = ({ onSuccess }) => {
                 style={{ display: "none" }}
                 id="header-input"
               />
-              <Button
-                as="label"
-                htmlFor="header-input"
-                variant="outline"
-                size="sm"
-                border="none"
-                borderRadius="full"
-                w="44px"
-                h="44px"
-                backdropFilter="blur(4px)"
-                backgroundColor="rgba(15, 20, 25, 0.75)"
-                _hover={{
-                  opacity: 0.6,
-                }}
+              <Tooltip
+                label="画像を追加"
+                openDelay={500}
+                gutter={2}
+                fontSize="xs"
               >
-                <RiCameraLine className="w-6 h-6 text-white" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRemoveHeaderImage}
-                border="none"
-                borderRadius="full"
-                w="44px"
-                h="44px"
-                backdropFilter="blur(4px)"
-                backgroundColor="rgba(15, 20, 25, 0.75)"
-                _hover={{
-                  opacity: 0.6,
-                }}
+                <Button
+                  as="label"
+                  htmlFor="header-input"
+                  variant="outline"
+                  size="sm"
+                  border="none"
+                  borderRadius="full"
+                  w="44px"
+                  h="44px"
+                  backdropFilter="blur(4px)"
+                  backgroundColor="rgba(15, 20, 25, 0.75)"
+                  _hover={{
+                    opacity: 0.6,
+                  }}
+                >
+                  <RiCameraLine className="w-6 h-6 text-white" />
+                </Button>
+              </Tooltip>
+              <Tooltip
+                label="画像を削除"
+                openDelay={500}
+                gutter={2}
+                fontSize="xs"
               >
-                <IoMdClose className="w-6 h-6 text-white" />
-              </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRemoveHeaderImage}
+                  border="none"
+                  borderRadius="full"
+                  w="44px"
+                  h="44px"
+                  backdropFilter="blur(4px)"
+                  backgroundColor="rgba(15, 20, 25, 0.75)"
+                  _hover={{
+                    opacity: 0.6,
+                  }}
+                >
+                  <IoMdClose className="w-6 h-6 text-white" />
+                </Button>
+              </Tooltip>
             </Flex>
           </>
         ) : (
@@ -181,28 +196,35 @@ export const UserProfileEditForm = ({ onSuccess }) => {
               style={{ display: "none" }}
               id="header-input"
             />
-            <Button
-              as="label"
-              htmlFor="header-input"
-              variant="outline"
-              size="sm"
-              position="absolute"
-              top="50%"
-              left="50%"
-              transform="translate(-50%, -50%)"
-              border="none"
-              borderRadius="full"
-              w="44px"
-              h="44px"
-              background="none"
-              backdropFilter="blur(4px)"
-              backgroundColor="rgba(15, 20, 25, 0.75)"
-              _hover={{
-                opacity: 0.6,
-              }}
+            <Tooltip
+              label="画像を追加"
+              openDelay={500}
+              gutter={2}
+              fontSize="xs"
             >
-              <RiCameraLine className="w-6 h-6 text-white" />
-            </Button>
+              <Button
+                as="label"
+                htmlFor="header-input"
+                variant="outline"
+                size="sm"
+                position="absolute"
+                top="50%"
+                left="50%"
+                transform="translate(-50%, -50%)"
+                border="none"
+                borderRadius="full"
+                w="44px"
+                h="44px"
+                background="none"
+                backdropFilter="blur(4px)"
+                backgroundColor="rgba(15, 20, 25, 0.75)"
+                _hover={{
+                  opacity: 0.6,
+                }}
+              >
+                <RiCameraLine className="w-6 h-6 text-white" />
+              </Button>
+            </Tooltip>
           </Box>
         )}
       </FormControl>
@@ -223,29 +245,30 @@ export const UserProfileEditForm = ({ onSuccess }) => {
             style={{ display: "none" }}
             id="avatar-input"
           />
-
-          <Button
-            as="label"
-            htmlFor="avatar-input"
-            variant="outline"
-            size="sm"
-            position="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            border="none"
-            borderRadius="full"
-            w="44px"
-            h="44px"
-            background="none"
-            backdropFilter="blur(2px)"
-            backgroundColor="rgba(15, 20, 25, 0.75)"
-            _hover={{
-              opacity: 0.6,
-            }}
-          >
-            <RiCameraLine className="w-6 h-6 text-white" />
-          </Button>
+          <Tooltip label="画像を追加" openDelay={500} gutter={2} fontSize="xs">
+            <Button
+              as="label"
+              htmlFor="avatar-input"
+              variant="outline"
+              size="sm"
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+              border="none"
+              borderRadius="full"
+              w="44px"
+              h="44px"
+              background="none"
+              backdropFilter="blur(2px)"
+              backgroundColor="rgba(15, 20, 25, 0.75)"
+              _hover={{
+                opacity: 0.6,
+              }}
+            >
+              <RiCameraLine className="w-6 h-6 text-white" />
+            </Button>
+          </Tooltip>
         </FormControl>
         <FormControl mb="6">
           <FloatingInput

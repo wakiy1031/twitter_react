@@ -22,7 +22,7 @@ export const HistoryNavButton = () => {
   };
 
   return (
-    <Tooltip label="Back" openDelay={500} gutter={2} fontSize="xs">
+    <Tooltip label="戻る" openDelay={500} gutter={2} fontSize="xs">
       <Button
         outline="none"
         bg="none"
