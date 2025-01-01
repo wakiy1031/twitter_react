@@ -1,6 +1,8 @@
 import { Box, Flex, VStack } from "@yamada-ui/react";
 import { PostForm } from "../features/post/components/PostForm";
 import { PostList } from "../features/post/PostList";
+import { LeftSidebar } from "../components/LeftSidebar";
+import { RightSidebar } from "../components/RightSidebar";
 
 export const HomePage = () => {
   return (
@@ -15,7 +17,11 @@ export const HomePage = () => {
         borderRight={{ base: "1px solid #e1e8ed", lg: "none" }}
         borderBottom={{ base: "none", lg: "1px solid #e1e8ed" }}
         alignItems="flex-start"
-      ></VStack>
+      >
+        <Box height="100%" position="fixed">
+          <LeftSidebar />
+        </Box>
+      </VStack>
       <Box width={{ base: "600px", lg: "100%" }}>
         <PostForm />
         <PostList />
@@ -25,7 +31,11 @@ export const HomePage = () => {
         p={4}
         borderLeft={{ base: "1px solid #e1e8ed", lg: "none" }}
         borderTop={{ base: "none", lg: "1px solid #e1e8ed" }}
-      ></VStack>
+      >
+        <Box height="100%" position="fixed" width="350px">
+          <RightSidebar />
+        </Box>
+      </VStack>
     </Flex>
   );
 };
