@@ -44,7 +44,7 @@ export const PostDetail = () => {
       <Flex alignItems="center">
         <HistoryNavButton />
         <Text fontWeight="bold" ml={4} fontSize="xl">
-          Post
+          ポストする
         </Text>
       </Flex>
       <Flex alignItems="center" pt={5}>

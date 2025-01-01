@@ -18,7 +18,6 @@ import {
   PiUsers,
   PiUser,
   PiDotsThreeCircle,
-  PiCheckCircle,
 } from "react-icons/pi";
 import { RiTwitterXFill } from "react-icons/ri";
 
