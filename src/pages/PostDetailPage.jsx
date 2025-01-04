@@ -1,5 +1,7 @@
 import { Box, Flex, VStack } from "@yamada-ui/react";
 import { PostDetail } from "../features/post/PostDetail";
+import { LeftSidebar } from "../components/LeftSidebar";
+import { RightSidebar } from "../components/RightSidebar";
 
 export const PostDetailPage = () => {
   return (
@@ -14,7 +16,11 @@ export const PostDetailPage = () => {
         borderRight={{ base: "1px solid #e1e8ed", lg: "none" }}
         borderBottom={{ base: "none", lg: "1px solid #e1e8ed" }}
         alignItems="flex-start"
-      ></VStack>
+      >
+        <Box height="100%" position="fixed">
+          <LeftSidebar />
+        </Box>
+      </VStack>
       <Box width={{ base: "600px", lg: "100%" }}>
         <PostDetail />
       </Box>
@@ -23,7 +29,11 @@ export const PostDetailPage = () => {
         p={4}
         borderLeft={{ base: "1px solid #e1e8ed", lg: "none" }}
         borderTop={{ base: "none", lg: "1px solid #e1e8ed" }}
-      ></VStack>
+      >
+        <Box height="100%" position="fixed" width="350px">
+          <RightSidebar />
+        </Box>
+      </VStack>
     </Flex>
   );
 };

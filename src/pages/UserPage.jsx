@@ -1,10 +1,9 @@
 import { Box, Flex, VStack } from "@yamada-ui/react";
-import { PostForm } from "../features/post/components/PostForm";
-import { PostList } from "../features/post/PostList";
+import { UserDetail } from "../features/user/UserDetail";
 import { LeftSidebar } from "../components/LeftSidebar";
 import { RightSidebar } from "../components/RightSidebar";
 
-export const HomePage = () => {
+export const UserPage = () => {
   return (
     <Flex
       minH="100dvh"
@@ -23,8 +22,7 @@ export const HomePage = () => {
         </Box>
       </VStack>
       <Box width={{ base: "600px", lg: "100%" }}>
-        <PostForm />
-        <PostList />
+        <UserDetail />
       </Box>
       <VStack
         width={{ base: "350px", lg: "100%" }}

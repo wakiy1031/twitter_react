@@ -1,13 +1,14 @@
 import { Box, Text, Flex, Avatar, Loading } from "@yamada-ui/react";
 import { PostImages } from "./components/postImages";
 import { usePostDetail } from "../../hooks/usePostDetail";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
 import { ActionButton } from "../../components/ActionButton";
 
 export const PostDetail = () => {
   const { postId } = useParams();
   const { post, isLoading, error } = usePostDetail(postId);
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -29,23 +30,45 @@ export const PostDetail = () => {
   if (!post) {
     return <div>投稿が見つかりません。</div>;
   }
+  const handleUserClick = (e) => {
+    if (!e.defaultPrevented) {
+      e.stopPropagation();
+      navigate(`/users/${user.id}`);
+    }
+  };
 
   const { content, user, post_create } = post;
 
   return (
-    <Box borderBottom="1px solid #dcdcde" py={2} px={3}>
+    <Box borderBottom="1px solid #dcdcde" py={2} px={4}>
       <Flex alignItems="center">
         <HistoryNavButton />
         <Text fontWeight="bold" ml={4} fontSize="xl">
-          Post
+          ポストする
         </Text>
       </Flex>
       <Flex alignItems="center" pt={5}>
-        <Avatar size="sm" mr={2} />
+        <Avatar
+          size="sm"
+          mr={2}
+          onClick={handleUserClick}
+          cursor="pointer"
+          src={user.avatar_url}
+        />
         <Box lineHeight={1}>
-          <Text className="font-bold">{user.name}</Text>
-          <Text className="text-gray-500 text-sm">
-            @{user.username || user.name}
+          <Text
+            className="font-bold"
+            onClick={handleUserClick}
+            cursor="pointer"
+          >
+            {user.name}
+          </Text>
+          <Text
+            className="text-gray-500 text-sm"
+            onClick={handleUserClick}
+            cursor="pointer"
+          >
+            @{user.email?.split("@")[0]}
           </Text>
         </Box>
       </Flex>

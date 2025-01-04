@@ -1,4 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentUser } from "../../user/userSlice";
 import { usePost } from "../../../hooks/usePost";
 import {
   Avatar,
@@ -12,8 +14,17 @@ import {
 import { PiImageSquare, PiX } from "react-icons/pi";
 import { Carousel, CarouselSlide } from "@yamada-ui/carousel";
 import { usePostListSWRInfinite } from "../customHooks/usePostListSWRInfinite";
+import { useNavigate } from "react-router-dom";
 
 export const PostForm = () => {
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
+
   const [content, setContent] = useState("");
   const [imageData, setImageData] = useState([]);
   const { handleSubmit } = usePost();
@@ -72,11 +83,23 @@ export const PostForm = () => {
 
   const isPostValid = content.trim() !== "";
 
+  const handleUserClick = (e) => {
+    if (!e.defaultPrevented) {
+      e.stopPropagation();
+      navigate(`/users/${currentUser.id}`);
+    }
+  };
+
   return (
     <form onSubmit={onSubmit}>
-      <Flex width="full" p={3} borderBottom="1px solid #dcdcde">
+      <Flex width="full" py={3} px={4} borderBottom="1px solid #dcdcde">
         <Box>
-          <Avatar size="sm" />
+          <Avatar
+            size="sm"
+            src={currentUser?.avatar_url}
+            onClick={handleUserClick}
+            cursor="pointer"
+          />
         </Box>
         <Box width="full" ml={4}>
           <Textarea
@@ -151,7 +174,7 @@ export const PostForm = () => {
               borderRadius="full"
               px={4}
             >
-              ポスト
+              ポストする
             </Button>
           </Flex>
         </Box>
