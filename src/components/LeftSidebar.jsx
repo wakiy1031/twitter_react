@@ -119,8 +119,10 @@ export const LeftSidebar = () => {
         >
           <Avatar
             size="md"
-            src={currentUser.avatar_url}
-            name={currentUser.name}
+            src={`${currentUser.avatar_url}?${new Date(
+              currentUser.updated_at
+            ).getTime()}`}
+            fallback={<Avatar size="xl" name={currentUser.name} />}
           />
           <Box ml={3}>
             <Text fontWeight="bold" fontSize="sm">
