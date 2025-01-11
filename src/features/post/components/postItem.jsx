@@ -2,6 +2,7 @@ import { Box, Text, Flex, Avatar, Tooltip } from "@yamada-ui/react";
 import { PostImages } from "./postImages";
 import { useNavigate } from "react-router-dom";
 import { PostMenuButton } from "./postMenuButton";
+import { ActionButton } from "../../../components/ActionButton";
 
 export const PostItem = ({ post, onPostDeleted }) => {
   const { id, content, user, created_at, post_create } = post;
@@ -65,6 +66,7 @@ export const PostItem = ({ post, onPostDeleted }) => {
           </Text>
           <Text mb={2}>{content}</Text>
           <PostImages post={post} />
+          <ActionButton post={post} user={user} />
         </Box>
       </Flex>
       <PostMenuButton post={post} onPostDeleted={onPostDeleted} />

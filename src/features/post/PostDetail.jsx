@@ -90,7 +90,7 @@ export const PostDetail = () => {
         >
           {post_create}
         </Text>
-        <ActionButton />
+        <ActionButton post={post} user={user} />
         <Box position="absolute" top={3} right={0}>
           <PostMenuButton post={post} onPostDeleted={onPostDeleted} />
         </Box>
