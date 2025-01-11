@@ -4,6 +4,7 @@ import { usePostDetail } from "../../hooks/usePostDetail";
 import { useParams, useNavigate } from "react-router-dom";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
 import { ActionButton } from "../../components/ActionButton";
+import { PostMenuButton } from "./components/postMenuButton";
 
 export const PostDetail = () => {
   const { postId } = useParams();
@@ -37,6 +38,10 @@ export const PostDetail = () => {
     }
   };
 
+  const onPostDeleted = () => {
+    navigate("/home");
+  };
+
   const { content, user, post_create } = post;
 
   return (
@@ -47,44 +52,49 @@ export const PostDetail = () => {
           ポストする
         </Text>
       </Flex>
-      <Flex alignItems="center" pt={5}>
-        <Avatar
-          size="sm"
-          mr={2}
-          onClick={handleUserClick}
-          cursor="pointer"
-          src={user.avatar_url}
-        />
-        <Box lineHeight={1}>
-          <Text
-            className="font-bold"
+      <Box position="relative">
+        <Flex alignItems="center" pt={5} position="relative">
+          <Avatar
+            size="sm"
+            mr={2}
             onClick={handleUserClick}
             cursor="pointer"
-          >
-            {user.name}
-          </Text>
-          <Text
-            className="text-gray-500 text-sm"
-            onClick={handleUserClick}
-            cursor="pointer"
-          >
-            @{user.email?.split("@")[0]}
-          </Text>
+            src={user.avatar_url}
+          />
+          <Box lineHeight={1}>
+            <Text
+              className="font-bold"
+              onClick={handleUserClick}
+              cursor="pointer"
+            >
+              {user.name}
+            </Text>
+            <Text
+              className="text-gray-500 text-sm"
+              onClick={handleUserClick}
+              cursor="pointer"
+            >
+              @{user.email?.split("@")[0]}
+            </Text>
+          </Box>
+        </Flex>
+        <Text mb={2} pt={2}>
+          {content}
+        </Text>
+        <PostImages post={post} />
+        <Text
+          mb={2}
+          py={4}
+          className="text-gray-500"
+          borderBottom="1px solid #dcdcde"
+        >
+          {post_create}
+        </Text>
+        <ActionButton />
+        <Box position="absolute" top={3} right={0}>
+          <PostMenuButton post={post} onPostDeleted={onPostDeleted} />
         </Box>
-      </Flex>
-      <Text mb={2} pt={2}>
-        {content}
-      </Text>
-      <PostImages post={post} />
-      <Text
-        mb={2}
-        py={4}
-        className="text-gray-500"
-        borderBottom="1px solid #dcdcde"
-      >
-        {post_create}
-      </Text>
-      <ActionButton />
+      </Box>
     </Box>
   );
 };
