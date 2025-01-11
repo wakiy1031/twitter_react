@@ -10,6 +10,11 @@ export const createPost = async (data) => {
   return response.data;
 };
 
+export const deletePost = async (id) => {
+  const response = await api.delete(`${POSTS_ENDPOINT}/${id}`);
+  return response.data;
+};
+
 export const uploadImage = async (data) => {
   try {
     const response = await api.post(IMAGES_ENDPOINT, data, {
