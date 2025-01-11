@@ -8,6 +8,7 @@ import {
   Button,
   Flex,
   Image,
+  Loading,
   Tab,
   TabList,
   TabPanel,
@@ -23,6 +24,7 @@ import { UserProfileEditModal } from "./components/UserProfileEditModal";
 import { MdOutlinePlace } from "react-icons/md";
 import { RiLink } from "react-icons/ri";
 import { IoCalendarOutline } from "react-icons/io5";
+import { usePostListSWRInfinite } from "../post/customHooks/usePostListSWRInfinite";
 
 export const UserDetail = () => {
   const { id } = useParams();
@@ -30,6 +32,7 @@ export const UserDetail = () => {
   const { user, status, error } = useSelector((state) => state.user);
   const location = useLocation();
   const navigate = useNavigate();
+  const { postsDataArr, isLoading, refreshPosts } = usePostListSWRInfinite();
 
   const { onClose: onProfileEditClose } = useDisclosure();
 
@@ -67,11 +70,29 @@ export const UserDetail = () => {
     return null;
   }
 
+  if (error) {
+    return <div>投稿一覧の取得中にエラーが発生しました。</div>;
+  }
+
+  if (isLoading && postsDataArr.length === 0) {
+    return (
+      <Loading
+        variant="oval"
+        fontSize="2xl"
+        color="blue.500"
+        mx="auto"
+        w="full"
+        mt={6}
+      />
+    );
+  }
+
   const refreshUserData = async () => {
     try {
       await dispatch(
         fetchUser(user.id, { timestamp: new Date().getTime() })
       ).unwrap();
+      await refreshPosts();
     } catch (error) {
       console.error("ユーザー情報の再取得に失敗:", error);
     }
@@ -264,7 +285,11 @@ export const UserDetail = () => {
           <TabPanels>
             <TabPanel p={0}>
               {user?.tweets?.map((post) => (
-                <PostItem key={post.id} post={post} />
+                <PostItem
+                  key={post.id}
+                  post={post}
+                  onPostDeleted={refreshUserData}
+                />
               ))}
             </TabPanel>
             <TabPanel>

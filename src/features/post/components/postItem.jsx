@@ -1,8 +1,9 @@
 import { Box, Text, Flex, Avatar, Tooltip } from "@yamada-ui/react";
 import { PostImages } from "./postImages";
 import { useNavigate } from "react-router-dom";
+import { PostMenuButton } from "./postMenuButton";
 
-export const PostItem = ({ post }) => {
+export const PostItem = ({ post, onPostDeleted }) => {
   const { id, content, user, created_at, post_create } = post;
   const navigate = useNavigate();
 
@@ -26,6 +27,7 @@ export const PostItem = ({ post }) => {
       px={4}
       onClick={handlePostClick}
       cursor="pointer"
+      position="relative"
     >
       <Flex alignItems="start">
         <Avatar
@@ -65,6 +67,7 @@ export const PostItem = ({ post }) => {
           <PostImages post={post} />
         </Box>
       </Flex>
+      <PostMenuButton post={post} onPostDeleted={onPostDeleted} />
     </Box>
   );
 };
