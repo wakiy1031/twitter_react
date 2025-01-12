@@ -29,18 +29,31 @@ export const ActionButton = ({ post, user }) => {
   return (
     <HStack spacing="4" justify="space-between">
       <Tooltip label="返信" openDelay={500} gutter={2} fontSize="xs">
-        <IconButton
-          variant="ghost"
-          icon={<MessageCircleIcon w={20} />}
-          aria-label="返信"
-          size="sm"
-          w={6}
-          p={1}
-          borderRadius="full"
-          color="gray.200"
-          _hover={{ bg: "blue.50", color: "blue.500" }}
+        <Flex
+          align="center"
+          cursor="pointer"
+          _hover={{
+            "& > .comment-count": {
+              color: "blue.500",
+            },
+          }}
           onClick={handleReplyClick}
-        />
+        >
+          <IconButton
+            variant="ghost"
+            icon={<MessageCircleIcon w={20} />}
+            aria-label="返信"
+            size="sm"
+            w={6}
+            p={1}
+            borderRadius="full"
+            color="gray.200"
+            _hover={{ bg: "blue.50", color: "blue.500" }}
+          />
+          <Text fontSize="sm" color="gray.300" className="comment-count">
+            {post.comments_count}
+          </Text>
+        </Flex>
       </Tooltip>
       <Tooltip label="リポスト" openDelay={500} gutter={2} fontSize="xs">
         <IconButton
