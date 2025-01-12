@@ -14,7 +14,7 @@ import {
 import { PiImageSquare, PiX } from "react-icons/pi";
 import { Carousel, CarouselSlide } from "@yamada-ui/carousel";
 
-export const CommentForm = ({ post_id }) => {
+export const CommentForm = ({ post_id, onSuccess }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -57,6 +57,9 @@ export const CommentForm = ({ post_id }) => {
         duration: 5000,
         isClosable: true,
       });
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error) {
       console.error("返信作成エラー:", error);
       notice({

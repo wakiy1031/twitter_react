@@ -1,20 +1,21 @@
 import { mutate } from "swr";
-import { uploadImage } from "../features/api/postApi";
 import { COMMENTS_ENDPOINT } from "../utils/api";
-import { createComment } from "../features/api/commentApi";
+import { createComment, uploadCommentImages } from "../features/api/commentApi";
 
 export const useComment = () => {
   const handleSubmit = async (commentData, imageData) => {
     try {
+      // コメントを作成
       const response = await createComment(commentData);
+      const commentId = response.data.id;
 
+      // 画像がある場合はアップロード
       if (imageData && imageData.length > 0) {
-        const formData = new FormData();
-        imageData.forEach(({ file }) => formData.append("images[]", file));
-        formData.append("post_id", response.data.id);
-        await uploadImage(formData);
+        const images = imageData.map(({ file }) => file);
+        await uploadCommentImages(commentId, images);
       }
 
+      // SWRのキャッシュを更新
       mutate(
         (key) => typeof key === "string" && key.startsWith(COMMENTS_ENDPOINT)
       );

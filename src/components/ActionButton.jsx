@@ -16,6 +16,7 @@ import {
   Flex,
   Box,
   Avatar,
+  ModalCloseButton,
 } from "@yamada-ui/react";
 import { CommentForm } from "../features/comment/components/commentForm";
 
@@ -97,9 +98,16 @@ export const ActionButton = ({ post, user }) => {
         isOpen={isOpen}
         onClose={onClose}
         onClick={(e) => e.stopPropagation()}
+        pt="12"
+        size="lg"
       >
-        <ModalBody onClick={(e) => e.stopPropagation()}>
-          <Flex alignItems="start">
+        <ModalCloseButton left="var(--ui-spaces-3)" top="var(--ui-spaces-4)" />
+
+        <ModalBody onClick={(e) => e.stopPropagation()} mb={0}>
+          <Flex
+            alignItems="start"
+            className="relative before:content-[''] before:absolute before:w-0.25 before:bg-gray-300 before:h-full before:left-4 before:top-0 pb-3 mb-1"
+          >
             <Avatar
               size="sm"
               mr={2}
@@ -126,13 +134,17 @@ export const ActionButton = ({ post, user }) => {
                   </span>
                 </Tooltip>
               </Text>
-              <Text mb={2}>{post.content}</Text>
+              <Text mb={3}>{post.content}</Text>
+              <Text className="text-blue-500">
+                <span className="text-gray-500">返信先：</span>@{post.user.name}
+                さん
+              </Text>
             </Box>
           </Flex>
         </ModalBody>
 
-        <ModalBody onClick={(e) => e.stopPropagation()}>
-          <CommentForm post_id={post.id} />
+        <ModalBody onClick={(e) => e.stopPropagation()} mt={0}>
+          <CommentForm post_id={post.id} onSuccess={onClose} />
         </ModalBody>
       </Modal>
     </HStack>
