@@ -12,13 +12,12 @@ import {
   Tooltip,
   useDisclosure,
   ModalBody,
-  ModalFooter,
   Text,
   Flex,
   Box,
   Avatar,
 } from "@yamada-ui/react";
-import { FloatingInput } from "./FloatingInput";
+import { CommentForm } from "../features/comment/components/commentForm";
 
 export const ActionButton = ({ post, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -94,8 +93,12 @@ export const ActionButton = ({ post, user }) => {
           _hover={{ bg: "blue.50", color: "blue.500" }}
         />
       </Tooltip>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalBody>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <ModalBody onClick={(e) => e.stopPropagation()}>
           <Flex alignItems="start">
             <Avatar
               size="sm"
@@ -128,9 +131,9 @@ export const ActionButton = ({ post, user }) => {
           </Flex>
         </ModalBody>
 
-        <ModalFooter>
-          <FloatingInput />
-        </ModalFooter>
+        <ModalBody onClick={(e) => e.stopPropagation()}>
+          <CommentForm post_id={post.id} />
+        </ModalBody>
       </Modal>
     </HStack>
   );
