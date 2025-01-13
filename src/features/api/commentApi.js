@@ -1,4 +1,9 @@
-import { api, COMMENTS_ENDPOINT } from "../../utils/api";
+import { api, COMMENTS_ENDPOINT, POSTS_ENDPOINT } from "../../utils/api";
+
+export const getComments = async (tweetId) => {
+  const response = await api.get(`${POSTS_ENDPOINT}/${tweetId}/comments`);
+  return response.data;
+};
 
 export const createComment = async (data) => {
   const response = await api.post(COMMENTS_ENDPOINT, data);

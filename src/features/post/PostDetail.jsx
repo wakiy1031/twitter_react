@@ -6,6 +6,7 @@ import { HistoryNavButton } from "../../components/HistoryNavButton";
 import { ActionButton } from "../../components/ActionButton";
 import { PostMenuButton } from "./components/postMenuButton";
 import { CommentForm } from "../comment/components/commentForm";
+import { CommentList } from "../comment/commentList";
 
 export const PostDetail = () => {
   const { postId } = useParams();
@@ -46,57 +47,64 @@ export const PostDetail = () => {
   const { content, user, post_create } = post;
 
   return (
-    <Box borderBottom="1px solid #dcdcde" py={2} px={4}>
-      <Flex alignItems="center">
-        <HistoryNavButton />
-        <Text fontWeight="bold" ml={4} fontSize="xl">
-          ポストする
-        </Text>
-      </Flex>
-      <Box position="relative" borderBottom="1px solid #dcdcde">
-        <Flex alignItems="center" pt={5} position="relative">
-          <Avatar
-            size="sm"
-            mr={2}
-            onClick={handleUserClick}
-            cursor="pointer"
-            src={user.avatar_url}
-          />
-          <Box lineHeight={1}>
-            <Text
-              className="font-bold"
-              onClick={handleUserClick}
-              cursor="pointer"
-            >
-              {user.name}
-            </Text>
-            <Text
-              className="text-gray-500 text-sm"
-              onClick={handleUserClick}
-              cursor="pointer"
-            >
-              @{user.email?.split("@")[0]}
-            </Text>
-          </Box>
+    <>
+      <Box borderBottom="1px solid #dcdcde" py={2} px={4}>
+        <Flex alignItems="center">
+          <HistoryNavButton />
+          <Text fontWeight="bold" ml={4} fontSize="xl">
+            ポストする
+          </Text>
         </Flex>
-        <Text mb={2} pt={2}>
-          {content}
-        </Text>
-        <PostImages post={post} />
-        <Text py={4} className="text-gray-500" borderBottom="1px solid #dcdcde">
-          {post_create}
-        </Text>
-        <ActionButton post={post} user={user} />
-        <Box position="absolute" top={3} right={0}>
-          <PostMenuButton post={post} onPostDeleted={onPostDeleted} />
+        <Box position="relative" borderBottom="1px solid #dcdcde">
+          <Flex alignItems="center" pt={5} position="relative">
+            <Avatar
+              size="sm"
+              mr={2}
+              onClick={handleUserClick}
+              cursor="pointer"
+              src={user.avatar_url}
+            />
+            <Box lineHeight={1}>
+              <Text
+                className="font-bold"
+                onClick={handleUserClick}
+                cursor="pointer"
+              >
+                {user.name}
+              </Text>
+              <Text
+                className="text-gray-500 text-sm"
+                onClick={handleUserClick}
+                cursor="pointer"
+              >
+                @{user.email?.split("@")[0]}
+              </Text>
+            </Box>
+          </Flex>
+          <Text mb={2} pt={2}>
+            {content}
+          </Text>
+          <PostImages post={post} />
+          <Text
+            py={4}
+            className="text-gray-500"
+            borderBottom="1px solid #dcdcde"
+          >
+            {post_create}
+          </Text>
+          <ActionButton post={post} user={user} />
+          <Box position="absolute" top={3} right={0}>
+            <PostMenuButton post={post} onPostDeleted={onPostDeleted} />
+          </Box>
         </Box>
+        <CommentForm
+          post={post}
+          user={user}
+          post_id={post.id}
+          isPostDetail={true}
+        />
       </Box>
-      <CommentForm
-        post={post}
-        user={user}
-        post_id={post.id}
-        isPostDetail={true}
-      />
-    </Box>
+      <CommentList post={post} />
+    </>
   );
 };
