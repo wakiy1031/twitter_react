@@ -1,5 +1,4 @@
 import { mutate } from "swr";
-import { COMMENTS_ENDPOINT } from "../utils/api";
 import { createComment, uploadCommentImages } from "../features/api/commentApi";
 
 export const useComment = () => {
@@ -16,9 +15,7 @@ export const useComment = () => {
       }
 
       // SWRのキャッシュを更新
-      mutate(
-        (key) => typeof key === "string" && key.startsWith(COMMENTS_ENDPOINT)
-      );
+      mutate(`comments-${commentData.post_id}`);
 
       return response;
     } catch (error) {
