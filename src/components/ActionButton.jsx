@@ -27,7 +27,7 @@ export const ActionButton = ({ post, user }) => {
     onOpen();
   };
   return (
-    <HStack spacing="4" justify="space-between">
+    <HStack spacing="4" justify="space-between" py={2}>
       <Tooltip label="返信" openDelay={500} gutter={2} fontSize="xs">
         <Flex
           align="center"
@@ -149,15 +149,21 @@ export const ActionButton = ({ post, user }) => {
               </Text>
               <Text mb={3}>{post.content}</Text>
               <Text className="text-blue-500">
-                <span className="text-gray-500">返信先：</span>@{post.user.name}
-                さん
+                <span className="text-gray-500">返信先：</span>@
+                {user.email?.split("@")[0]}
+                <span className="text-gray-500">さん</span>
               </Text>
             </Box>
           </Flex>
         </ModalBody>
 
         <ModalBody onClick={(e) => e.stopPropagation()} mt={0}>
-          <CommentForm post_id={post.id} onSuccess={onClose} />
+          <CommentForm
+            post_id={post.id}
+            onSuccess={onClose}
+            post={post}
+            user={user}
+          />
         </ModalBody>
       </Modal>
     </HStack>

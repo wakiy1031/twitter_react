@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
 import { ActionButton } from "../../components/ActionButton";
 import { PostMenuButton } from "./components/postMenuButton";
+import { CommentForm } from "../comment/components/commentForm";
 
 export const PostDetail = () => {
   const { postId } = useParams();
@@ -52,7 +53,7 @@ export const PostDetail = () => {
           ポストする
         </Text>
       </Flex>
-      <Box position="relative">
+      <Box position="relative" borderBottom="1px solid #dcdcde">
         <Flex alignItems="center" pt={5} position="relative">
           <Avatar
             size="sm"
@@ -82,12 +83,7 @@ export const PostDetail = () => {
           {content}
         </Text>
         <PostImages post={post} />
-        <Text
-          mb={2}
-          py={4}
-          className="text-gray-500"
-          borderBottom="1px solid #dcdcde"
-        >
+        <Text py={4} className="text-gray-500" borderBottom="1px solid #dcdcde">
           {post_create}
         </Text>
         <ActionButton post={post} user={user} />
@@ -95,6 +91,12 @@ export const PostDetail = () => {
           <PostMenuButton post={post} onPostDeleted={onPostDeleted} />
         </Box>
       </Box>
+      <CommentForm
+        post={post}
+        user={user}
+        post_id={post.id}
+        isPostDetail={true}
+      />
     </Box>
   );
 };
