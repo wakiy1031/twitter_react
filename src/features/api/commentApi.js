@@ -10,6 +10,11 @@ export const createComment = async (data) => {
   return response.data;
 };
 
+export const deleteComment = async (commentId) => {
+  const response = await api.delete(`${COMMENTS_ENDPOINT}/${commentId}`);
+  return response.data;
+};
+
 // コメントの画像アップロード用の関数を追加
 export const uploadCommentImages = async (commentId, images) => {
   const formData = new FormData();
