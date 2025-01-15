@@ -1,5 +1,12 @@
 import { mutate } from "swr";
-import { createComment, uploadCommentImages } from "../features/api/commentApi";
+import {
+  createComment,
+  uploadCommentImages,
+  deleteComment,
+  getComments,
+} from "../features/api/commentApi";
+
+const getCommentsKey = (postId) => `comments-${postId}`;
 
 export const useComment = () => {
   const handleSubmit = async (commentData, imageData) => {
@@ -15,7 +22,9 @@ export const useComment = () => {
       }
 
       // SWRのキャッシュを更新
-      mutate(`comments-${commentData.post_id}`);
+      const key = getCommentsKey(commentData.post_id);
+      const newComments = await getComments(commentData.post_id);
+      await mutate(key, newComments, false);
 
       return response;
     } catch (error) {
@@ -24,5 +33,27 @@ export const useComment = () => {
     }
   };
 
-  return { handleSubmit };
+  const handleDelete = async (commentId, postId) => {
+    if (!postId) {
+      console.error("post_idが指定されていません");
+      throw new Error("post_idが指定されていません");
+    }
+
+    const key = getCommentsKey(postId);
+    try {
+      // APIを呼び出してコメントを削除
+      await deleteComment(commentId);
+
+      // 削除後のデータを取得
+      const updatedComments = await getComments(postId);
+
+      // キャッシュを更新
+      await mutate(key, updatedComments, false);
+    } catch (error) {
+      console.error("コメント削除エラー:", error);
+      throw error;
+    }
+  };
+
+  return { handleSubmit, handleDelete };
 };

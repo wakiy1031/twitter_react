@@ -1,8 +1,9 @@
 import { Box, Text, Flex, Avatar, Tooltip } from "@yamada-ui/react";
 import { useNavigate } from "react-router-dom";
 import { PostImages } from "../../post/components/postImages";
+import { CommentMenuButton } from "./commentMenuButton";
 
-export const CommentItem = ({ comment }) => {
+export const CommentItem = ({ comment, post }) => {
   const { content, user, created_at, images } = comment;
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ export const CommentItem = ({ comment }) => {
   };
 
   return (
-    <Box borderBottom="1px solid #dcdcde" py={2} px={4}>
+    <Box borderBottom="1px solid #dcdcde" py={2} px={4} position="relative">
       <Flex alignItems="start">
         <Avatar
           size="sm"
@@ -57,6 +58,7 @@ export const CommentItem = ({ comment }) => {
           )}
         </Box>
       </Flex>
+      <CommentMenuButton comment={{ ...comment, post_id: post.id }} />
     </Box>
   );
 };
