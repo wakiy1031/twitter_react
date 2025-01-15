@@ -5,8 +5,13 @@ import {
   deleteComment,
   getComments,
 } from "../features/api/commentApi";
+import { fetchPost } from "../features/api/postApi";
+import { POSTS_ENDPOINT } from "../utils/api";
 
 const getCommentsKey = (postId) => `comments-${postId}`;
+const getPostKey = (postId) => `post/${postId}`;
+const getPostsKey = (pageIndex) =>
+  `${POSTS_ENDPOINT}?offset=${pageIndex * 50}&limit=50`;
 
 export const useComment = () => {
   const handleSubmit = async (commentData, imageData) => {
@@ -21,10 +26,29 @@ export const useComment = () => {
         await uploadCommentImages(commentId, images);
       }
 
-      // SWRのキャッシュを更新
-      const key = getCommentsKey(commentData.post_id);
-      const newComments = await getComments(commentData.post_id);
-      await mutate(key, newComments, false);
+      // 新しいデータを取得
+      const [newComments, updatedPost] = await Promise.all([
+        getComments(commentData.post_id),
+        fetchPost(commentData.post_id),
+      ]);
+
+      // キャッシュを更新
+      await Promise.all([
+        mutate(getCommentsKey(commentData.post_id), newComments, true),
+        mutate(getPostKey(commentData.post_id), updatedPost, true),
+        mutate(
+          getPostsKey(0),
+          async (posts) => {
+            if (!posts) return posts;
+            return posts.map((post) =>
+              post.id === commentData.post_id
+                ? { ...post, comments_count: updatedPost.data.comments_count }
+                : post
+            );
+          },
+          true
+        ),
+      ]);
 
       return response;
     } catch (error) {
@@ -39,16 +63,33 @@ export const useComment = () => {
       throw new Error("post_idが指定されていません");
     }
 
-    const key = getCommentsKey(postId);
     try {
       // APIを呼び出してコメントを削除
       await deleteComment(commentId);
 
-      // 削除後のデータを取得
-      const updatedComments = await getComments(postId);
+      // 新しいデータを取得
+      const [updatedComments, updatedPost] = await Promise.all([
+        getComments(postId),
+        fetchPost(postId),
+      ]);
 
       // キャッシュを更新
-      await mutate(key, updatedComments, false);
+      await Promise.all([
+        mutate(getCommentsKey(postId), updatedComments, true),
+        mutate(getPostKey(postId), updatedPost, true),
+        mutate(
+          getPostsKey(0),
+          async (posts) => {
+            if (!posts) return posts;
+            return posts.map((post) =>
+              post.id === postId
+                ? { ...post, comments_count: updatedPost.data.comments_count }
+                : post
+            );
+          },
+          true
+        ),
+      ]);
     } catch (error) {
       console.error("コメント削除エラー:", error);
       throw error;

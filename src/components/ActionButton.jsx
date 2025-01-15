@@ -19,13 +19,24 @@ import {
   ModalCloseButton,
 } from "@yamada-ui/react";
 import { CommentForm } from "../features/comment/components/commentForm";
+import useSWR from "swr";
+import { fetchPost } from "../features/api/postApi";
+
+const getPostKey = (postId) => `post/${postId}`;
 
 export const ActionButton = ({ post, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data: postData } = useSWR(getPostKey(post.id), () =>
+    fetchPost(post.id)
+  );
+
+  const commentsCount = postData?.data?.comments_count ?? post.comments_count;
+
   const handleReplyClick = (e) => {
     e.stopPropagation();
     onOpen();
   };
+
   return (
     <HStack spacing="4" justify="space-between" py={2}>
       <Tooltip label="返信" openDelay={500} gutter={2} fontSize="xs">
@@ -51,7 +62,7 @@ export const ActionButton = ({ post, user }) => {
             _hover={{ bg: "blue.50", color: "blue.500" }}
           />
           <Text fontSize="sm" color="gray.300" className="comment-count">
-            {post.comments_count}
+            {commentsCount}
           </Text>
         </Flex>
       </Tooltip>
