@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PostImages } from "../../post/components/postImages";
 import { CommentMenuButton } from "./commentMenuButton";
 
-export const CommentItem = ({ comment, post }) => {
+export const CommentItem = ({ comment, post, onCommentDeleted }) => {
   const { content, user, created_at, images } = comment;
   const navigate = useNavigate();
 
@@ -58,7 +58,10 @@ export const CommentItem = ({ comment, post }) => {
           )}
         </Box>
       </Flex>
-      <CommentMenuButton comment={{ ...comment, post_id: post.id }} />
+      <CommentMenuButton
+        comment={{ ...comment, post_id: post.id }}
+        onCommentDeleted={onCommentDeleted}
+      />
     </Box>
   );
 };

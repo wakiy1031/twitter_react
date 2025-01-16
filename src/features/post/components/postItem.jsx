@@ -64,7 +64,7 @@ export const PostItem = ({ post, onPostDeleted }) => {
               <span className="text-gray-500 text-sm">・{created_at}</span>
             </Tooltip>
           </Text>
-          <Text mb={2}>{content}</Text>
+          <Text>{content}</Text>
           <PostImages post={post} />
           <ActionButton post={post} user={user} />
         </Box>

@@ -316,6 +316,7 @@ export const UserDetail = () => {
                       },
                     }}
                     post={comment.post}
+                    onCommentDeleted={refreshUserData}
                   />
                 </Box>
               ))}

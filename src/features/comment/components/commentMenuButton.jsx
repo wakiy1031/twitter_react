@@ -14,14 +14,12 @@ import { PiDotsThreeBold, PiTrash } from "react-icons/pi";
 import { MdOutlinePersonAddAlt } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useComment } from "../../../hooks/useComment";
-import { useComments } from "../../../hooks/useComments";
 
-export const CommentMenuButton = ({ comment }) => {
+export const CommentMenuButton = ({ comment, onCommentDeleted }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const notice = useNotice();
   const { handleDelete } = useComment();
-  const { refreshComments } = useComments(comment.post_id);
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -36,7 +34,9 @@ export const CommentMenuButton = ({ comment }) => {
     try {
       onClose();
       await handleDelete(comment.id, comment.post_id);
-      await refreshComments();
+      if (onCommentDeleted) {
+        await onCommentDeleted();
+      }
       notice({
         title: "コメントを削除しました",
         status: "success",
