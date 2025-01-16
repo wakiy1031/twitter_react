@@ -1,18 +1,11 @@
 import { Box, Text, Flex, Avatar, Tooltip } from "@yamada-ui/react";
-import { PostImages } from "./postImages";
 import { useNavigate } from "react-router-dom";
-import { PostMenuButton } from "./postMenuButton";
-import { ActionButton } from "../../../components/ActionButton";
+import { PostImages } from "../../post/components/postImages";
+import { CommentMenuButton } from "./commentMenuButton";
 
-export const PostItem = ({ post, onPostDeleted }) => {
-  const { id, content, user, created_at, post_create } = post;
+export const CommentItem = ({ comment, post, onCommentDeleted }) => {
+  const { content, user, created_at, images } = comment;
   const navigate = useNavigate();
-
-  const handlePostClick = (e) => {
-    if (!e.defaultPrevented) {
-      navigate(`/${user.name}/${id}`);
-    }
-  };
 
   const handleUserClick = (e) => {
     if (!e.defaultPrevented) {
@@ -22,14 +15,7 @@ export const PostItem = ({ post, onPostDeleted }) => {
   };
 
   return (
-    <Box
-      borderBottom="1px solid #dcdcde"
-      py={2}
-      px={4}
-      onClick={handlePostClick}
-      cursor="pointer"
-      position="relative"
-    >
+    <Box borderBottom="1px solid #dcdcde" py={2} px={4} position="relative">
       <Flex alignItems="start">
         <Avatar
           size="sm"
@@ -56,7 +42,7 @@ export const PostItem = ({ post, onPostDeleted }) => {
               @{user.email?.split("@")[0]}
             </span>
             <Tooltip
-              label={post_create}
+              label={created_at}
               openDelay={500}
               gutter={2}
               fontSize="xs"
@@ -64,12 +50,18 @@ export const PostItem = ({ post, onPostDeleted }) => {
               <span className="text-gray-500 text-sm">・{created_at}</span>
             </Tooltip>
           </Text>
-          <Text>{content}</Text>
-          <PostImages post={post} />
-          <ActionButton post={post} user={user} />
+          <Text mb={2}>{content}</Text>
+          {images && images.length > 0 && (
+            <Box mb={2}>
+              <PostImages post={{ images }} />
+            </Box>
+          )}
         </Box>
       </Flex>
-      <PostMenuButton post={post} onPostDeleted={onPostDeleted} />
+      <CommentMenuButton
+        comment={{ ...comment, post_id: post.id }}
+        onCommentDeleted={onCommentDeleted}
+      />
     </Box>
   );
 };

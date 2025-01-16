@@ -1,6 +1,6 @@
 import { Box, Flex, VStack } from "@yamada-ui/react";
 import { PostForm } from "../features/post/components/PostForm";
-import { PostList } from "../features/post/PostList";
+import { PostList } from "../features/post/postList";
 import { LeftSidebar } from "../components/LeftSidebar";
 import { RightSidebar } from "../components/RightSidebar";
 

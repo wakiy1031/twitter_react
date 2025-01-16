@@ -25,6 +25,7 @@ import { MdOutlinePlace } from "react-icons/md";
 import { RiLink } from "react-icons/ri";
 import { IoCalendarOutline } from "react-icons/io5";
 import { usePostListSWRInfinite } from "../post/customHooks/usePostListSWRInfinite";
+import { CommentItem } from "../comment/components/commentItem";
 
 export const UserDetail = () => {
   const { id } = useParams();
@@ -292,8 +293,33 @@ export const UserDetail = () => {
                 />
               ))}
             </TabPanel>
-            <TabPanel>
-              <Text>返信</Text>
+            <TabPanel p={0}>
+              {user?.comments?.map((comment) => (
+                <Box key={comment.id} pt={4}>
+                  <Text fontSize="sm" color="gray.500" mb={2} px={4}>
+                    返信先:{" "}
+                    <Link to={`/posts/${comment.post.id}`}>
+                      <span className="text-blue-500">
+                        @{comment.post.user.name}さん
+                      </span>
+                      の投稿
+                    </Link>
+                  </Text>
+                  <CommentItem
+                    comment={{
+                      ...comment,
+                      user: {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        avatar_url: user.avatar_url,
+                      },
+                    }}
+                    post={comment.post}
+                    onCommentDeleted={refreshUserData}
+                  />
+                </Box>
+              ))}
             </TabPanel>
             <TabPanel>
               <Text>メディア</Text>
