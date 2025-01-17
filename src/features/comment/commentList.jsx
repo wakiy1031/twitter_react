@@ -22,10 +22,6 @@ export const CommentList = ({ post }) => {
     return <div>コメントの取得中にエラーが発生しました。</div>;
   }
 
-  if (!comments || comments.length === 0) {
-    return <Box py={4}>まだコメントはありません。</Box>;
-  }
-
   return (
     <Box>
       {comments.map((comment) => (

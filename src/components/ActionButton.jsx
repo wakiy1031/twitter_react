@@ -64,8 +64,8 @@ export const ActionButton = ({ post, user }) => {
   return (
     <HStack spacing="4" justify="space-between" py={2}>
       <Tooltip label="返信" openDelay={500} gutter={2} fontSize="xs">
-        <Flex
-          align="center"
+        <Box
+          position="relative"
           cursor="pointer"
           _hover={{
             "& > .comment-count": {
@@ -85,14 +85,23 @@ export const ActionButton = ({ post, user }) => {
             color="gray.200"
             _hover={{ bg: "blue.50", color: "blue.500" }}
           />
-          <Text fontSize="sm" color="gray.300" className="comment-count">
+          <Text
+            fontSize="sm"
+            color="gray.300"
+            className="comment-count"
+            position="absolute"
+            animation="slideInUp"
+            top="50%"
+            right="-.25em"
+            transform="translateY(-50%)"
+          >
             {commentsCount}
           </Text>
-        </Flex>
+        </Box>
       </Tooltip>
       <Tooltip label="リポスト" openDelay={500} gutter={2} fontSize="xs">
-        <Flex
-          align="center"
+        <Box
+          position="relative"
           cursor="pointer"
           _hover={{
             "& > .repost-count": {
@@ -116,10 +125,15 @@ export const ActionButton = ({ post, user }) => {
             fontSize="sm"
             color={isReposted ? "green.500" : "gray.300"}
             className="repost-count"
+            animation="slideInUp"
+            position="absolute"
+            top="50%"
+            right="-.25em"
+            transform="translateY(-50%)"
           >
-            {repostsCount}
+            {repostsCount > 0 ? repostsCount : ""}
           </Text>
-        </Flex>
+        </Box>
       </Tooltip>
       <Tooltip label="いいね" openDelay={500} gutter={2} fontSize="xs">
         <IconButton
