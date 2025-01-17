@@ -21,6 +21,7 @@ import {
 import { CommentForm } from "../features/comment/components/commentForm";
 import useSWR from "swr";
 import { fetchPost } from "../features/api/postApi";
+import { useRepost } from "../hooks/useRepost";
 
 const getPostKey = (postId) => `post/${postId}`;
 
@@ -31,10 +32,33 @@ export const ActionButton = ({ post, user }) => {
   );
 
   const commentsCount = postData?.data?.comments_count ?? post.comments_count;
+  const repostsCount = postData?.data?.repost_count ?? post.repost_count;
+  const isReposted = postData?.data?.reposted ?? post.reposted;
 
   const handleReplyClick = (e) => {
     e.stopPropagation();
     onOpen();
+  };
+
+  const { handleCreate, handleDelete } = useRepost();
+
+  const handleRepostClick = async (e) => {
+    e.stopPropagation();
+    try {
+      if (isReposted) {
+        await handleDelete(post.id);
+      } else {
+        await handleCreate(post.id);
+      }
+    } catch (error) {
+      console.error("リポスト操作に失敗しました。エラーの詳細:", {
+        error,
+        errorMessage: error.message,
+        errorResponse: error.response?.data,
+        postId: post.id,
+        isReposted,
+      });
+    }
   };
 
   return (
@@ -67,17 +91,35 @@ export const ActionButton = ({ post, user }) => {
         </Flex>
       </Tooltip>
       <Tooltip label="リポスト" openDelay={500} gutter={2} fontSize="xs">
-        <IconButton
-          variant="ghost"
-          icon={<RepeatIcon w={20} />}
-          aria-label="リポスト"
-          size="sm"
-          w={6}
-          p={1}
-          borderRadius="full"
-          color="gray.200"
-          _hover={{ bg: "green.50", color: "green.500" }}
-        />
+        <Flex
+          align="center"
+          cursor="pointer"
+          _hover={{
+            "& > .repost-count": {
+              color: "green.500",
+            },
+          }}
+          onClick={handleRepostClick}
+        >
+          <IconButton
+            variant="ghost"
+            icon={<RepeatIcon w={20} />}
+            aria-label="リポスト"
+            size="sm"
+            w={6}
+            p={1}
+            borderRadius="full"
+            color={isReposted ? "green.500" : "gray.200"}
+            _hover={{ bg: "green.50", color: "green.500" }}
+          />
+          <Text
+            fontSize="sm"
+            color={isReposted ? "green.500" : "gray.300"}
+            className="repost-count"
+          >
+            {repostsCount}
+          </Text>
+        </Flex>
       </Tooltip>
       <Tooltip label="いいね" openDelay={500} gutter={2} fontSize="xs">
         <IconButton
