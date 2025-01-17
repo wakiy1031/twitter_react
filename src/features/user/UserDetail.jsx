@@ -18,6 +18,7 @@ import {
   useDisclosure,
   VStack,
 } from "@yamada-ui/react";
+import { RepeatIcon } from "@yamada-ui/lucide";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
 import { PostItem } from "../post/components/PostItem";
 import { UserProfileEditModal } from "./components/UserProfileEditModal";
@@ -286,11 +287,15 @@ export const UserDetail = () => {
           <TabPanels>
             <TabPanel p={0}>
               {user?.tweets?.map((post) => (
-                <PostItem
-                  key={post.id}
-                  post={post}
-                  onPostDeleted={refreshUserData}
-                />
+                <Box key={post.id}>
+                  {post.is_repost && (
+                    <Text fontSize="sm" color="gray.500" px={4} pt={2} mb={-1}>
+                      <RepeatIcon display="inline-block" mr={2} />
+                      あなたがリポストしました
+                    </Text>
+                  )}
+                  <PostItem post={post} onPostDeleted={refreshUserData} />
+                </Box>
               ))}
             </TabPanel>
             <TabPanel p={0}>
