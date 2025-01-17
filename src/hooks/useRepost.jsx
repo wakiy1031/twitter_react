@@ -1,7 +1,12 @@
 import { mutate } from "swr";
 import { createRepost, deleteRepost } from "../features/api/repostApi";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "../features/user/userSlice";
 
 export const useRepost = () => {
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.user.user);
+
   const handleCreate = async (postId) => {
     try {
       const response = await createRepost(postId);
@@ -55,6 +60,11 @@ export const useRepost = () => {
         },
         false
       );
+
+      // Reduxのユーザー情報を再取得して更新
+      if (currentUser?.id) {
+        await dispatch(fetchUser(currentUser.id)).unwrap();
+      }
 
       return response;
     } catch (error) {
