@@ -316,7 +316,7 @@ export const UserDetail = () => {
                         mb={-1}
                       >
                         <RepeatIcon display="inline-block" mr={2} />
-                        あなたがリポストしました
+                        {user.name}がリポストしました
                       </Text>
                     )}
                     <PostItem post={post} onPostDeleted={refreshUserData} />
