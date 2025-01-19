@@ -61,7 +61,16 @@ export const UserDetail = () => {
   }, [dispatch, id, location.state?.preventReload]);
 
   if (status === "loading" && !user) {
-    return <div>読み込み中...</div>;
+    return (
+      <Loading
+        variant="oval"
+        fontSize="2xl"
+        color="blue.500"
+        mx="auto"
+        w="full"
+        my={6}
+      />
+    );
   }
 
   if (status === "failed") {
@@ -286,17 +295,33 @@ export const UserDetail = () => {
           </TabList>
           <TabPanels>
             <TabPanel p={0}>
-              {user?.tweets?.map((post) => (
-                <Box key={post.id}>
-                  {post.is_repost && (
-                    <Text fontSize="sm" color="gray.500" px={4} pt={2} mb={-1}>
-                      <RepeatIcon display="inline-block" mr={2} />
-                      あなたがリポストしました
-                    </Text>
-                  )}
-                  <PostItem post={post} onPostDeleted={refreshUserData} />
-                </Box>
-              ))}
+              {[...(user?.tweets || [])]
+                ?.sort((a, b) => {
+                  const dateA = a.is_repost
+                    ? new Date(a.reposted_at)
+                    : new Date(a.created_at);
+                  const dateB = b.is_repost
+                    ? new Date(b.reposted_at)
+                    : new Date(b.created_at);
+                  return dateB - dateA;
+                })
+                .map((post) => (
+                  <Box key={post.id}>
+                    {post.is_repost && (
+                      <Text
+                        fontSize="sm"
+                        color="gray.500"
+                        px={4}
+                        pt={2}
+                        mb={-1}
+                      >
+                        <RepeatIcon display="inline-block" mr={2} />
+                        あなたがリポストしました
+                      </Text>
+                    )}
+                    <PostItem post={post} onPostDeleted={refreshUserData} />
+                  </Box>
+                ))}
             </TabPanel>
             <TabPanel p={0}>
               {user?.comments?.map((comment) => (
@@ -330,11 +355,15 @@ export const UserDetail = () => {
               <Text>メディア</Text>
             </TabPanel>
             <TabPanel p={0}>
-              {user?.favorites?.map((post) => (
-                <Box key={post.id}>
-                  <PostItem post={post} onPostDeleted={refreshUserData} />
-                </Box>
-              ))}
+              {[...(user?.favorites || [])]
+                ?.sort(
+                  (a, b) => new Date(b.created_at) - new Date(a.created_at)
+                )
+                .map((post) => (
+                  <Box key={post.id}>
+                    <PostItem post={post} onPostDeleted={refreshUserData} />
+                  </Box>
+                ))}
             </TabPanel>
           </TabPanels>
         </Tabs>
