@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./userSlice";
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Image,
   Loading,
@@ -15,28 +14,24 @@ import {
   TabPanels,
   Tabs,
   Text,
-  useDisclosure,
   VStack,
 } from "@yamada-ui/react";
 import { RepeatIcon } from "@yamada-ui/lucide";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
 import { PostItem } from "../post/components/PostItem";
-import { UserProfileEditModal } from "./components/UserProfileEditModal";
 import { MdOutlinePlace } from "react-icons/md";
 import { RiLink } from "react-icons/ri";
 import { IoCalendarOutline } from "react-icons/io5";
 import { usePostListSWRInfinite } from "../post/customHooks/usePostListSWRInfinite";
 import { CommentItem } from "../comment/components/commentItem";
+import { UserFollowBtn } from "./components/UserFollowBtn";
 
 export const UserDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { user, status, error } = useSelector((state) => state.user);
   const location = useLocation();
-  const navigate = useNavigate();
   const { postsDataArr, isLoading, refreshPosts } = usePostListSWRInfinite();
-
-  const { onClose: onProfileEditClose } = useDisclosure();
 
   useEffect(() => {
     let isSubscribed = true;
@@ -109,17 +104,6 @@ export const UserDetail = () => {
     }
   };
 
-  const handleCloseProfileEdit = async () => {
-    onProfileEditClose();
-    await refreshUserData();
-    navigate(`/users/${user.id}`, {
-      replace: true,
-      state: { preventReload: true },
-    });
-  };
-
-  const showProfileEditModal = location.pathname === "/settings/profile";
-
   return (
     <Box position="relative">
       <Flex
@@ -168,54 +152,7 @@ export const UserDetail = () => {
             key={user.updated_at}
             fallback={<Avatar size="xl" name={user.name} />}
           />
-          <Box position="absolute" top="0" right="0">
-            {user.is_self ? (
-              <Button
-                variant="outline"
-                borderRadius="30px"
-                onClick={() =>
-                  navigate("/settings/profile", {
-                    replace: true,
-                    state: {
-                      isModal: true,
-                      preventReload: true,
-                    },
-                  })
-                }
-              >
-                プロフィールを編集
-              </Button>
-            ) : user.is_following ? (
-              <Button
-                variant="outline"
-                borderRadius="30px"
-                _hover={{
-                  bg: "red.50",
-                  borderColor: "red.500",
-                  color: "red.500",
-                }}
-                data-hover-text="フォロー解除"
-                sx={{
-                  "&[data-hover-text]": {
-                    "&:hover": {
-                      "& > span:first-of-type": {
-                        display: "none",
-                      },
-                      "&::before": {
-                        content: "attr(data-hover-text)",
-                      },
-                    },
-                  },
-                }}
-              >
-                <span>フォロー中</span>
-              </Button>
-            ) : (
-              <Button variant="outline" borderRadius="30px">
-                フォロー
-              </Button>
-            )}
-          </Box>
+          <UserFollowBtn user={user} />
           <Box lineHeight={1.25}>
             <Text className="font-bold" fontSize="xl">
               {user.name}
@@ -367,12 +304,6 @@ export const UserDetail = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-        {showProfileEditModal && (
-          <UserProfileEditModal
-            isOpen={true}
-            onClose={handleCloseProfileEdit}
-          />
-        )}
       </VStack>
     </Box>
   );
