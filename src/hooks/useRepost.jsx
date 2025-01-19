@@ -28,6 +28,11 @@ export const useRepost = () => {
         false
       );
 
+      // Reduxのユーザー情報を再取得して更新
+      if (currentUser?.id) {
+        await dispatch(fetchUser(currentUser.id)).unwrap();
+      }
+
       return response;
     } catch (error) {
       console.error("Repost creation failed:", {

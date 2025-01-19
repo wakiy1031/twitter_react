@@ -329,8 +329,12 @@ export const UserDetail = () => {
             <TabPanel>
               <Text>メディア</Text>
             </TabPanel>
-            <TabPanel>
-              <Text>いいね</Text>
+            <TabPanel p={0}>
+              {user?.favorites?.map((post) => (
+                <Box key={post.id}>
+                  <PostItem post={post} onPostDeleted={refreshUserData} />
+                </Box>
+              ))}
             </TabPanel>
           </TabPanels>
         </Tabs>
