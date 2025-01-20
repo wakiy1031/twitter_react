@@ -2,12 +2,33 @@ import { Box, Button, useDisclosure } from "@yamada-ui/react";
 import { UserProfileEditModal } from "../../user/components/UserProfileEditModal";
 import { useNavigate } from "react-router-dom";
 import { usePostListSWRInfinite } from "../../post/customHooks/usePostListSWRInfinite";
+import { useFollow } from "../../../hooks/useFollow";
 
 export const UserFollowBtn = ({ user }) => {
   const navigate = useNavigate();
   const { refreshPosts } = usePostListSWRInfinite();
 
   const { onClose: onProfileEditClose } = useDisclosure();
+
+  const { handleFollow, handleUnfollow } = useFollow();
+
+  const handleFollowClick = async () => {
+    try {
+      await handleFollow(user.id);
+      await refreshPosts();
+    } catch (error) {
+      console.error("フォローに失敗しました:", error);
+    }
+  };
+
+  const handleUnfollowClick = async () => {
+    try {
+      await handleUnfollow(user.id);
+      await refreshPosts();
+    } catch (error) {
+      console.error("フォロー解除に失敗しました:", error);
+    }
+  };
 
   const handleCloseProfileEdit = async () => {
     onProfileEditClose();
@@ -49,6 +70,7 @@ export const UserFollowBtn = ({ user }) => {
               color: "red.500",
             }}
             data-hover-text="フォロー解除"
+            onClick={handleUnfollowClick}
             sx={{
               "&[data-hover-text]": {
                 "&:hover": {
@@ -65,8 +87,12 @@ export const UserFollowBtn = ({ user }) => {
             <span>フォロー中</span>
           </Button>
         ) : (
-          <Button variant="outline" borderRadius="30px">
-            フォロー
+          <Button
+            variant="outline"
+            borderRadius="30px"
+            onClick={handleFollowClick}
+          >
+            フォローする
           </Button>
         )}
       </Box>
