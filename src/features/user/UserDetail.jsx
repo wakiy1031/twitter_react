@@ -183,15 +183,15 @@ export const UserDetail = () => {
           <Flex mt="2">
             <Text>
               <span className="font-bold mr-1">
-                {user.followers_count || 0}
-              </span>
-              <span className="text-gray-500">フォロワー</span>
-            </Text>
-            <Text>
-              <span className="font-bold mr-1">
                 {user.following_count || 0}
               </span>
               <span className="text-gray-500">フォロー中</span>
+            </Text>
+            <Text ml={4}>
+              <span className="font-bold mr-1">
+                {user.followers_count || 0}
+              </span>
+              <span className="text-gray-500">フォロワー</span>
             </Text>
           </Flex>
         </Box>

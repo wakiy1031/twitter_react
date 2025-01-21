@@ -1,4 +1,12 @@
-import { Box, Button, useDisclosure } from "@yamada-ui/react";
+import {
+  Box,
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useDisclosure,
+} from "@yamada-ui/react";
 import { UserProfileEditModal } from "../../user/components/UserProfileEditModal";
 import { useNavigate } from "react-router-dom";
 import { usePostListSWRInfinite } from "../../post/customHooks/usePostListSWRInfinite";
@@ -61,31 +69,39 @@ export const UserFollowBtn = ({ user }) => {
             プロフィールを編集
           </Button>
         ) : user.is_following ? (
-          <Button
-            variant="outline"
-            borderRadius="30px"
-            _hover={{
-              bg: "red.50",
-              borderColor: "red.500",
-              color: "red.500",
-            }}
-            data-hover-text="フォロー解除"
-            onClick={handleUnfollowClick}
-            sx={{
-              "&[data-hover-text]": {
-                "&:hover": {
-                  "& > span:first-of-type": {
-                    display: "none",
+          <Menu>
+            <MenuButton onClick={(e) => e.stopPropagation()}>
+              <Button
+                variant="outline"
+                borderRadius="30px"
+                _hover={{
+                  bg: "red.50",
+                  borderColor: "red.500",
+                  color: "red.500",
+                }}
+                data-hover-text="フォロー解除"
+                sx={{
+                  "&[data-hover-text]": {
+                    "&:hover": {
+                      "& > span:first-of-type": {
+                        display: "none",
+                      },
+                      "&::before": {
+                        content: "attr(data-hover-text)",
+                      },
+                    },
                   },
-                  "&::before": {
-                    content: "attr(data-hover-text)",
-                  },
-                },
-              },
-            }}
-          >
-            <span>フォロー中</span>
-          </Button>
+                }}
+              >
+                <span>フォロー中</span>
+              </Button>
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={handleUnfollowClick}>
+                @{user.name}さんをフォロー解除
+              </MenuItem>
+            </MenuList>
+          </Menu>
         ) : (
           <Button
             variant="outline"
