@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 import { deletePost } from "../../api/postApi";
 import { usePostListSWRInfinite } from "../customHooks/usePostListSWRInfinite";
 import { useFollow } from "../../../hooks/useFollow";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { fetchPost } from "../../api/postApi";
 
 export const PostMenuButton = ({ post, onPostDeleted }) => {
@@ -71,7 +71,12 @@ export const PostMenuButton = ({ post, onPostDeleted }) => {
     e.stopPropagation();
     try {
       await handleFollow(post.user.id);
+      // 投稿データの更新
+      await mutate(`post/${post.id}`);
+      // 投稿一覧の更新
       await refreshPosts();
+      // 同じユーザーの他の投稿も更新
+      await mutate((key) => typeof key === "string" && key.startsWith("post/"));
     } catch (error) {
       console.error("フォローに失敗しました:", error);
     }
@@ -81,7 +86,12 @@ export const PostMenuButton = ({ post, onPostDeleted }) => {
     e.stopPropagation();
     try {
       await handleUnfollow(post.user.id);
+      // 投稿データの更新
+      await mutate(`post/${post.id}`);
+      // 投稿一覧の更新
       await refreshPosts();
+      // 同じユーザーの他の投稿も更新
+      await mutate((key) => typeof key === "string" && key.startsWith("post/"));
     } catch (error) {
       console.error("フォロー解除に失敗しました:", error);
     }
@@ -119,9 +129,15 @@ export const PostMenuButton = ({ post, onPostDeleted }) => {
             </MenuItem>
           ) : isFollowing ? (
             <MenuItem
-              icon={<MdOutlinePersonRemoveAlt1 fontSize="1.5em" />}
+              icon={
+                <MdOutlinePersonRemoveAlt1
+                  fontSize="1.5em"
+                  className="text-red-500"
+                />
+              }
               fontWeight="bold"
               onClick={handleUnfollowClick}
+              color="red.500"
             >
               {post.user.name}さんをフォロー解除
             </MenuItem>
