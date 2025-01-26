@@ -1,8 +1,7 @@
-import { RepeatIcon } from "@yamada-ui/lucide";
 import { Box, Text, Flex, Avatar } from "@yamada-ui/react";
 import { useNavigate } from "react-router-dom";
-
-export const NotificationRepostItem = ({ notification }) => {
+import { FaHeart } from "react-icons/fa";
+export const NotificationFavoriteItem = ({ notification }) => {
   const { actor, notifiable } = notification;
   const navigate = useNavigate();
 
@@ -28,7 +27,7 @@ export const NotificationRepostItem = ({ notification }) => {
       position="relative"
     >
       <Flex alignItems="start">
-        <RepeatIcon size="lg" color="green.500" mr={2} mt={1} />
+        <FaHeart size={20} className="mr-2 mt-1" color="rgb(249, 24, 128)" />
         <Box w="full">
           <Avatar
             size="sm"
@@ -46,7 +45,7 @@ export const NotificationRepostItem = ({ notification }) => {
             >
               {actor.name}
             </span>
-            があなたのポストをリポストしました
+            があなたのポストをいいねしました
           </Text>
           <Text color="gray.500">{notifiable.content}</Text>
         </Box>

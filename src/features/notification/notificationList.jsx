@@ -4,6 +4,7 @@ import { getNotifications } from "../api/notificationApi";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
 import { NotificationRepostItem } from "./components/notificationRepostItem";
 import { NotificationFollowItem } from "./components/notificationFollowItem";
+import { NotificationFavoriteItem } from "./components/notificatioFavoriteItem";
 export const NotificationList = () => {
   const {
     data: notifications,
@@ -64,7 +65,7 @@ export const NotificationList = () => {
               {notification.action === "follow" ? (
                 <NotificationFollowItem notification={notification} />
               ) : notification.action === "like" ? (
-                <Text>いいねされました</Text>
+                <NotificationFavoriteItem notification={notification} />
               ) : notification.action === "comment" ? (
                 <Text>コメントされました</Text>
               ) : notification.action === "repost" ? (
