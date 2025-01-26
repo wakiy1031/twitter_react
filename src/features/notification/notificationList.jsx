@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { getNotifications } from "../api/notificationApi";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
 import { NotificationRepostItem } from "./components/notificationRepostItem";
+import { NotificationFollowItem } from "./components/notificationFollowItem";
 export const NotificationList = () => {
   const {
     data: notifications,
@@ -61,7 +62,7 @@ export const NotificationList = () => {
               borderBottom="1px solid #dcdcde"
             >
               {notification.action === "follow" ? (
-                <Text>フォローされました</Text>
+                <NotificationFollowItem notification={notification} />
               ) : notification.action === "like" ? (
                 <Text>いいねされました</Text>
               ) : notification.action === "comment" ? (
@@ -71,9 +72,6 @@ export const NotificationList = () => {
               ) : (
                 <Text>{notification.message}</Text>
               )}
-              <Text fontSize="sm" color="gray.500" mt={1}>
-                {notification.created_at}
-              </Text>
             </Box>
           ))}
         </Box>
