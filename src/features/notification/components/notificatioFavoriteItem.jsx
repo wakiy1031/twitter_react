@@ -45,7 +45,7 @@ export const NotificationFavoriteItem = ({ notification }) => {
             >
               {actor.name}
             </span>
-            があなたのポストをいいねしました
+            さんがあなたのポストをいいねしました
           </Text>
           <Text color="gray.500">{notifiable.content}</Text>
         </Box>

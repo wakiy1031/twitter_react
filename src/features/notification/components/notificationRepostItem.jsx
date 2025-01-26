@@ -46,7 +46,7 @@ export const NotificationRepostItem = ({ notification }) => {
             >
               {actor.name}
             </span>
-            があなたのポストをリポストしました
+            さんがあなたのポストをリポストしました
           </Text>
           <Text color="gray.500">{notifiable.content}</Text>
         </Box>
