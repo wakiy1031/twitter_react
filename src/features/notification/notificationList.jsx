@@ -2,7 +2,7 @@ import { Box, Text, Flex, Loading } from "@yamada-ui/react";
 import useSWR from "swr";
 import { getNotifications } from "../api/notificationApi";
 import { HistoryNavButton } from "../../components/HistoryNavButton";
-
+import { NotificationRepostItem } from "./components/notificationRepostItem";
 export const NotificationList = () => {
   const {
     data: notifications,
@@ -57,10 +57,8 @@ export const NotificationList = () => {
           {notifications?.map((notification) => (
             <Box
               key={notification.id}
-              p={4}
-              borderBottom="1px solid #dcdcde"
-              _hover={{ bg: "gray.50" }}
               cursor="pointer"
+              borderBottom="1px solid #dcdcde"
             >
               {notification.action === "follow" ? (
                 <Text>フォローされました</Text>
@@ -69,7 +67,7 @@ export const NotificationList = () => {
               ) : notification.action === "comment" ? (
                 <Text>コメントされました</Text>
               ) : notification.action === "repost" ? (
-                <Text>リポストされました</Text>
+                <NotificationRepostItem notification={notification} />
               ) : (
                 <Text>{notification.message}</Text>
               )}
