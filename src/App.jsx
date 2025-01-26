@@ -10,7 +10,7 @@ import { UserPage } from "./pages/UserPage";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { useLocation } from "react-router-dom";
-
+import { NotificationPage } from "./pages/NotificationPage";
 export const ScrollToTop = () => {
   const { pathname } = useLocation();
 
@@ -42,6 +42,7 @@ export const App = () => {
               <Route path="/:username/:postId" element={<PostDetailPage />} />
               <Route path="/users/:id" element={<UserPage />} />
               <Route path="/settings/profile" element={<UserPage />} />
+              <Route path="/notifications" element={<NotificationPage />} />
             </Routes>
           </Router>
         </UIProvider>

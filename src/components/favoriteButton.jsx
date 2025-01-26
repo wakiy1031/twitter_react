@@ -1,5 +1,5 @@
-import { HeartIcon } from "@yamada-ui/lucide";
 import { Box, IconButton, Text, Tooltip } from "@yamada-ui/react";
+import { FaHeart } from "react-icons/fa";
 import useSWR from "swr";
 import { fetchPost } from "../features/api/postApi";
 import { useFavorite } from "../hooks/useFavorite";
@@ -43,24 +43,24 @@ export const FavoriteButton = ({ post }) => {
         cursor="pointer"
         _hover={{
           "& > .favorite-count": {
-            color: "red.500",
+            color: "rgb(249, 24, 128)",
           },
         }}
       >
         <IconButton
           variant="ghost"
-          icon={<HeartIcon w={20} />}
+          icon={<FaHeart w={20} />}
           aria-label="いいね"
           size="sm"
           w={6}
           p={1}
           borderRadius="full"
-          color={isFavorited ? "red.500" : "gray.200"}
-          _hover={{ bg: "red.50", color: "red.500" }}
+          color={isFavorited ? "rgb(249, 24, 128)" : "gray.200"}
+          _hover={{ bg: "rgba(249, 24, 128, 0.2)", color: "rgb(249, 24, 128)" }}
         />
         <Text
           fontSize="sm"
-          color={isFavorited ? "red.500" : "gray.300"}
+          color={isFavorited ? "rgb(249, 24, 128)" : "gray.300"}
           className="favorite-count"
           animation="slideInUp"
           position="absolute"
