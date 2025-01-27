@@ -10,6 +10,7 @@ export const USERS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/users`;
 export const PROFILE_ENDPOINT = `${DEFAULT_API_LOCALHOST}/profile`;
 export const COMMENTS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/comments`;
 export const NOTIFICATIONS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/notifications`;
+export const ROOMS_ENDPOINT = `${DEFAULT_API_LOCALHOST}/rooms`;
 
 export const api = axios.create({
   baseURL: DEFAULT_API_LOCALHOST,
