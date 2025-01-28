@@ -46,7 +46,7 @@ export const LeftSidebar = () => {
     { icon: PiHouse, label: "ホーム", path: "/home" },
     { icon: PiMagnifyingGlass, label: "話題を検索", path: "/search" },
     { icon: PiBell, label: "通知", path: "/notifications" },
-    { icon: PiEnvelope, label: "メッセージ", path: "/messages" },
+    { icon: PiEnvelope, label: "メッセージ", path: "/rooms" },
     { icon: PiBookmark, label: "ブックマーク", path: "/bookmarks" },
     { icon: PiUsers, label: "コミュニティ", path: "/communities" },
     { icon: PiUser, label: "プロフィール", path: `/users/${currentUser?.id}` },

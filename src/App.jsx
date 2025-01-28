@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { useLocation } from "react-router-dom";
 import { NotificationPage } from "./pages/NotificationPage";
+import { MessagePage } from "./pages/MessagePage";
 export const ScrollToTop = () => {
   const { pathname } = useLocation();
 
@@ -43,6 +44,7 @@ export const App = () => {
               <Route path="/users/:id" element={<UserPage />} />
               <Route path="/settings/profile" element={<UserPage />} />
               <Route path="/notifications" element={<NotificationPage />} />
+              <Route path="/rooms" element={<MessagePage />} />
             </Routes>
           </Router>
         </UIProvider>
