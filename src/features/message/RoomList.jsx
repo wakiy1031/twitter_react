@@ -1,9 +1,12 @@
 import { Box, Text, Flex, Avatar, Loading } from "@yamada-ui/react";
 import { getRooms } from "../api/roomApi";
 import useSWR from "swr";
+import { useSetRecoilState } from "recoil";
+import { selectedRoomIdState } from "./atoms/selectedRoomAtom";
 
 export const RoomList = () => {
   const { data: rooms, error, isLoading } = useSWR("rooms", getRooms);
+  const setSelectedRoomId = useSetRecoilState(selectedRoomIdState);
 
   if (error) {
     return (
@@ -25,6 +28,10 @@ export const RoomList = () => {
       />
     );
   }
+
+  const handleRoomClick = (roomId) => {
+    setSelectedRoomId(roomId);
+  };
 
   return (
     <Box>
@@ -59,6 +66,8 @@ export const RoomList = () => {
               borderBottom="1px solid #dcdcde"
               cursor="pointer"
               _hover={{ bg: "gray.50" }}
+              id="message-room"
+              onClick={() => handleRoomClick(room.id)}
             >
               <Flex alignItems="center">
                 <Avatar

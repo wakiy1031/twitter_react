@@ -1,0 +1,70 @@
+import { Box, Text, Flex, Avatar } from "@yamada-ui/react";
+import { useRecoilValue } from "recoil";
+import { selectedRoomIdState } from "./atoms/selectedRoomAtom";
+import useSWR from "swr";
+import { getRooms } from "../api/roomApi";
+
+export const MessageRoom = () => {
+  const selectedRoomId = useRecoilValue(selectedRoomIdState);
+  const { data: rooms } = useSWR("rooms", getRooms);
+
+  if (!selectedRoomId) {
+    return (
+      <Box p={4}>
+        <Text color="gray.500">メッセージを選択してください</Text>
+      </Box>
+    );
+  }
+
+  const selectedRoom = rooms?.find((room) => room.id === selectedRoomId);
+
+  if (!selectedRoom) {
+    return null;
+  }
+
+  return (
+    <Box>
+      <Flex
+        alignItems="center"
+        position="sticky"
+        top={0}
+        left={0}
+        px={2}
+        zIndex={3}
+        w="100%"
+        bg="rgba(255, 255, 255, 0.7)"
+        backdropFilter="blur(5px)"
+      >
+        <Box>
+          <Text fontWeight="bold">{selectedRoom.other_user.name}</Text>
+        </Box>
+      </Flex>
+      <Box textAlign="center" mt={6}>
+        <Avatar
+          size="lg"
+          mr={2}
+          src={selectedRoom.other_user.avatar_url}
+          fallback={<Avatar size="lg" name={selectedRoom.other_user.name} />}
+        />
+        <Text fontWeight="bold">{selectedRoom.other_user.name}</Text>
+        <Text color="gray.500" fontSize="sm">
+          @{selectedRoom.other_user.email?.split("@")[0]}
+        </Text>
+        <Text mt={2}>{selectedRoom.other_user.description}</Text>
+        <Text mt={2}>
+          <span className="text-gray-500 text-sm">
+            {selectedRoom.other_user.created_at}からTwitterを利用しています
+          </span>
+          <span className="text-gray-500 text-sm">
+            ・{selectedRoom.other_user.followers_count}フォロワー
+          </span>
+        </Text>
+      </Box>
+
+      <Box p={4}>
+        {/* ここにメッセージの一覧を表示する */}
+        <Text>メッセージの一覧がここに表示されます</Text>
+      </Box>
+    </Box>
+  );
+};

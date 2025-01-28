@@ -1,7 +1,7 @@
 import { Box, Flex, VStack } from "@yamada-ui/react";
 import { LeftSidebar } from "../components/LeftSidebar";
-import { RightSidebar } from "../components/RightSidebar";
 import { RoomList } from "../features/message/roomList";
+import { MessageRoom } from "../features/message/MessageRoom";
 
 export const MessagePage = () => {
   return (
@@ -30,8 +30,8 @@ export const MessagePage = () => {
         borderLeft={{ base: "1px solid #e1e8ed", lg: "none" }}
         borderTop={{ base: "none", lg: "1px solid #e1e8ed" }}
       >
-        <Box height="100%" position="fixed" width="350px">
-          <RightSidebar />
+        <Box height="100%" position="fixed" width="600px">
+          <MessageRoom />
         </Box>
       </VStack>
     </Flex>
