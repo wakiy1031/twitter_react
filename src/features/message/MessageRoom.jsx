@@ -4,6 +4,7 @@ import { selectedRoomIdState } from "./atoms/selectedRoomAtom";
 import useSWR from "swr";
 import { getRooms } from "../api/roomApi";
 import { MessageList } from "./components/MessageList";
+import { MessageForm } from "./components/MessageForm";
 export const MessageRoom = () => {
   const selectedRoomId = useRecoilValue(selectedRoomIdState);
   const { data: rooms } = useSWR("rooms", getRooms);
@@ -40,7 +41,13 @@ export const MessageRoom = () => {
         </Box>
       </Flex>
       <Box flex="1" overflowY="auto" className="scroll-smooth">
-        <Box textAlign="center" mt={6}>
+        <Box
+          textAlign="center"
+          mt={6}
+          borderBottom="1px solid"
+          borderColor="gray.200"
+          pb={10}
+        >
           <Avatar
             size="lg"
             mr={2}
@@ -66,6 +73,7 @@ export const MessageRoom = () => {
           <MessageList />
         </Box>
       </Box>
+      <MessageForm />
     </Box>
   );
 };

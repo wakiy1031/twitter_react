@@ -4,10 +4,12 @@ import { selectedRoomIdState } from "../atoms/selectedRoomAtom";
 import useSWR from "swr";
 import { getMessages } from "../../api/messageApi";
 import { useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
 
 export const MessageList = () => {
   const selectedRoomId = useRecoilValue(selectedRoomIdState);
   const currentUser = useSelector((state) => state.user.currentUser);
+  const messagesEndRef = useRef(null);
   const {
     data: messages,
     error,
@@ -15,6 +17,14 @@ export const MessageList = () => {
   } = useSWR(selectedRoomId ? `messages/${selectedRoomId}` : null, () =>
     getMessages(selectedRoomId)
   );
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   if (error) {
     return (
@@ -46,8 +56,13 @@ export const MessageList = () => {
   }
 
   return (
-    <Box display="flex" flexDirection="column-reverse">
-      {messages.map((message) => {
+    <Box
+      display="flex"
+      flexDirection="column"
+      overflowX="clip"
+      overflowY="auto"
+    >
+      {[...messages].reverse().map((message) => {
         const isSelf = message.user.id === currentUser.id;
         return (
           <Box
@@ -77,7 +92,8 @@ export const MessageList = () => {
                 bg={isSelf ? "rgb(29, 155, 240);" : "gray.50"}
                 color={isSelf ? "white" : "black"}
                 p={2}
-                borderRadius="lg"
+                px={3}
+                borderRadius="xl"
               >
                 {message.content}
               </Text>
@@ -93,6 +109,7 @@ export const MessageList = () => {
           </Box>
         );
       })}
+      <div ref={messagesEndRef} />
     </Box>
   );
 };
