@@ -79,21 +79,25 @@ export const RoomList = () => {
                 <Box>
                   <Text>
                     <span className="font-bold">{room.other_user.name}</span>
-                    <span className="text-gray-500 ml-1 text-sm">
+                    <span className="text-gray-500 ml-1 text-xs">
                       @{room.other_user.email?.split("@")[0]}
                     </span>
                     {room.last_message && (
-                      <span className="text-gray-500 text-sm">
+                      <span className="text-gray-500 text-xs">
                         ・{room.last_message.created_at}
                       </span>
                     )}
                   </Text>
                   {room.last_message && (
-                    <>
-                      <Text color="gray.500" fontSize="sm">
-                        {room.last_message.content}
-                      </Text>
-                    </>
+                    <Text
+                      color="gray.500"
+                      fontSize="sm"
+                      whiteSpace="nowrap"
+                      overflow="hidden"
+                      textOverflow="ellipsis"
+                    >
+                      {room.last_message.content}
+                    </Text>
                   )}
                 </Box>
               </Flex>
