@@ -69,33 +69,40 @@ export const UserFollowBtn = ({ user }) => {
             プロフィールを編集
           </Button>
         ) : user.is_following ? (
-          <Menu>
-            <MenuButton onClick={(e) => e.stopPropagation()}>
-              <Button
-                variant="outline"
-                borderRadius="30px"
-                _hover={{
-                  bg: "red.50",
-                  borderColor: "red.500",
-                  color: "red.500",
-                }}
-                data-hover-text="フォロー解除"
-                sx={{
-                  "&[data-hover-text]": {
-                    "&:hover": {
-                      "& > span:first-of-type": {
-                        display: "none",
-                      },
-                      "&::before": {
-                        content: "attr(data-hover-text)",
-                      },
+          <Menu
+            ariant="outline"
+            borderRadius="30px"
+            onClick={handleFollowClick}
+          >
+            <Box
+              as={MenuButton}
+              variant="outline"
+              borderRadius="30px"
+              border="1px solid black"
+              fontWeight="bold"
+              px={4}
+              py={2}
+              _hover={{
+                bg: "red.50",
+                borderColor: "red.500",
+                color: "red.500",
+              }}
+              data-hover-text="フォロー解除"
+              sx={{
+                "&[data-hover-text]": {
+                  "&:hover": {
+                    "& > span:first-of-type": {
+                      display: "none",
+                    },
+                    "&::before": {
+                      content: "attr(data-hover-text)",
                     },
                   },
-                }}
-              >
-                <span>フォロー中</span>
-              </Button>
-            </MenuButton>
+                },
+              }}
+            >
+              <span className="block w-full">フォロー中</span>
+            </Box>
             <MenuList>
               <MenuItem onClick={handleUnfollowClick}>
                 @{user.name}さんをフォロー解除
