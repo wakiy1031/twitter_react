@@ -25,6 +25,7 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { usePostListSWRInfinite } from "../post/customHooks/usePostListSWRInfinite";
 import { CommentItem } from "../comment/components/commentItem";
 import { UserFollowBtn } from "./components/UserFollowBtn";
+import { MessageRoomBtn } from "../message/components/MessageRoomBtn";
 
 export const UserDetail = () => {
   const { id } = useParams();
@@ -152,6 +153,7 @@ export const UserDetail = () => {
             key={user.updated_at}
             fallback={<Avatar size="xl" name={user.name} />}
           />
+          <MessageRoomBtn user={user} />
           <UserFollowBtn user={user} />
           <Box lineHeight={1.25}>
             <Text className="font-bold" fontSize="xl">
