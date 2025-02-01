@@ -12,6 +12,7 @@ import { store } from "./app/store";
 import { useLocation } from "react-router-dom";
 import { NotificationPage } from "./pages/NotificationPage";
 import { MessagePage } from "./pages/MessagePage";
+import { BookmarkPage } from "./pages/BookmarkPage";
 export const ScrollToTop = () => {
   const { pathname } = useLocation();
 
@@ -45,6 +46,7 @@ export const App = () => {
               <Route path="/settings/profile" element={<UserPage />} />
               <Route path="/notifications" element={<NotificationPage />} />
               <Route path="/rooms" element={<MessagePage />} />
+              <Route path="/bookmarks" element={<BookmarkPage />} />
             </Routes>
           </Router>
         </UIProvider>
