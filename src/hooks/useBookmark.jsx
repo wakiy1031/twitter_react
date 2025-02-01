@@ -27,6 +27,9 @@ export const useBookmark = () => {
         false
       );
 
+      // ブックマーク一覧を更新
+      await mutate("bookmarks");
+
       // Reduxのユーザー情報を再取得して更新
       if (currentUser?.id) {
         await dispatch(fetchUser(currentUser.id)).unwrap();
@@ -63,6 +66,9 @@ export const useBookmark = () => {
         },
         false
       );
+
+      // ブックマーク一覧を更新
+      await mutate("bookmarks");
 
       // Reduxのユーザー情報を再取得して更新
       if (currentUser?.id) {
